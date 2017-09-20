@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26906.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Indigo.Core", "Indigo.Core\Indigo.Core.csproj", "{AFE782CB-8121-4C9A-90C1-DA84487C60F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Indigo.Core", "Indigo.Core\Indigo.Core.csproj", "{867BC30A-D947-4264-AAA3-7E6885B939F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AFE782CB-8121-4C9A-90C1-DA84487C60F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AFE782CB-8121-4C9A-90C1-DA84487C60F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AFE782CB-8121-4C9A-90C1-DA84487C60F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AFE782CB-8121-4C9A-90C1-DA84487C60F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{867BC30A-D947-4264-AAA3-7E6885B939F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{867BC30A-D947-4264-AAA3-7E6885B939F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{867BC30A-D947-4264-AAA3-7E6885B939F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{867BC30A-D947-4264-AAA3-7E6885B939F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {56FDE5F8-DDF0-4A26-9793-CFE66679B661}
+		SolutionGuid = {CFE980B1-D5A0-4AE4-9D78-70DE436363E1}
 	EndGlobalSection
 EndGlobal
