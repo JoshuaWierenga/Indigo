@@ -4,11 +4,11 @@ namespace Indigo.Core.Models
 {
     public class Message
     {
-		public int MessageId;
-		public string message;
-		public DateTime CreationTime;
-		public bool isEdited;
-		public User Sender;
-		public Conversation Location;
+		public int MessageId { get; set; }
+		public string message { get; set; }
+		public DateTime CreationTime { get; set; }
+		public bool isEdited { get; set; }
+		public User Sender { get; set; }
+		public Conversation Location { get; set; }
 	}
 }

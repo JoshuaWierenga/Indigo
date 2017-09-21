@@ -1,12 +1,11 @@
 ﻿namespace Indigo.Core.Models
 {
     public class UserConversation
-    {
-		public int UserConversationId;
-		public int UserId;
-		public int ConversationId;
-		public Conversation Conversation;
-		public User User;
-		public bool isAdmin;
+	{
+		public int UserId { get; set; }
+		public int ConversationId { get; set; }
+		public Conversation Conversation { get; set; }
+		public User User { get; set; }
+		public bool isAdmin { get; set; }
     }
 }

@@ -4,10 +4,10 @@ namespace Indigo.Core.Models
 {
     public class Conversation
     {
-		public int ConversationId;
-		public string ConversationName;
-		public bool isGroupChat;
-		public ICollection<UserConversation> UserConversations;
-		public ICollection<Message> Messages;
+		public int ConversationId { get; set; }
+		public string ConversationName { get; set; }
+		public bool isGroupChat { get; set; }
+		public ICollection<UserConversation> UserConversations { get; set; }
+		public ICollection<Message> Messages { get; set; }
 	}
 }

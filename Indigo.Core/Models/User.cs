@@ -4,10 +4,10 @@ namespace Indigo.Core.Models
 {
     public class User
     {
-		public int UserId;
-		public string Username;
-		public string PasswordHash;
-		public string Email;
-		public ICollection<UserConversation> UserConversations;
+		public int UserId { get; set; }
+		public string Username { get; set; }
+		public string PasswordHash { get; set; }
+		public string Email { get; set; }
+		public ICollection<UserConversation> UserConversations { get; set; }
     }
 }
