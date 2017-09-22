@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Indigo.Client.Core.Rest;
+using Indigo.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,9 +14,18 @@ namespace Indigo.Client.Core
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class MainPage : ContentPage
 	{
-		public MainPage ()
+		IIndigoApi Api = Refit.RestService.For<IIndigoApi>("http://localhost:52097/api");
+		List<User> Users = new List<User>();
+
+		public MainPage()
 		{
-			InitializeComponent ();
+			InitializeComponent();
+
+			BindingContext = this;
+
+			Users = Task.Run(() => Api.GetUsers()).Result;
+			test.ItemsSource = Users;
 		}
+
 	}
 }
