@@ -1,5 +1,5 @@
 ﻿using Indigo.Client.Core.ViewModels;
-
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -15,6 +15,11 @@ namespace Indigo.Client.Core.Views
 			InitializeComponent();
 
 			BindingContext = viewModel = new UsersViewModel();
+		}
+
+		public void AddUser_Clicked(object sender, EventArgs e)
+		{
+
 		}
 
 		protected async override void OnAppearing()

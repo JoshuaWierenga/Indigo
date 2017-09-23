@@ -1,8 +1,4 @@
 ﻿using Indigo.Client.Core.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -16,7 +12,10 @@ namespace Indigo.Client.Core
 		{
 			InitializeComponent();
 
-			MainPage = new UsersPage();
+			MainPage = new NavigationPage(new UsersPage())
+			{
+				Title = "Test",			
+			};
 		}
 
 		protected override void OnStart()

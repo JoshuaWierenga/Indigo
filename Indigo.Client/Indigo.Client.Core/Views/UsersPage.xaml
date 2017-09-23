@@ -2,23 +2,24 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Indigo.Client.Core.Views.UsersPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add User" 
+                     Clicked="AddUser_Clicked"
+                     Icon="addicon.png" />
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout>
-            <ListView 
-                ItemsSource="{Binding Users}"
-                CachingStrategy="RecycleElement"
-                RowHeight="60">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <Label Margin="8" 
+        <ListView ItemsSource="{Binding Users}"
+                  CachingStrategy="RecycleElement"
+                  RowHeight="60">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Label Margin="8" 
                                Text="{Binding Username}"
                                FontAttributes="Bold" />
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            <Button Text="Add User"/>
-        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </ContentPage.Content>
 </ContentPage>
