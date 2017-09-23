@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Indigo.Client.Core.Views;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +16,7 @@ namespace Indigo.Client.Core
 		{
 			InitializeComponent();
 
-			MainPage = new MainPage();
+			MainPage = new UsersPage();
 		}
 
 		protected override void OnStart()
