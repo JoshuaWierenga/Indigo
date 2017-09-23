@@ -9,7 +9,6 @@ namespace Indigo.Client.Core.ViewModels
     {
 		public ObservableRangeCollection<User> Users { get; set; }
 		
-
 		public UsersViewModel()
 		{
 			Users = new ObservableRangeCollection<User>();	
