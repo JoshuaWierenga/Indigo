@@ -8,9 +8,11 @@
                      Icon="addicon.png" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <ListView ItemsSource="{Binding Users}"
+        <ListView x:Name="UsersListView"
+                  ItemsSource="{Binding Users}"
                   CachingStrategy="RecycleElement"
-                  RowHeight="60">
+                  RowHeight="60"
+                  ItemSelected="User_Clicked">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>

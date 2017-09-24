@@ -12,5 +12,8 @@ namespace Indigo.Client.Core.Rest
 
 		[Post("/UsersApi")]
 		Task<User> CreateUserAsync([Body] User user);
-    }
+
+		[Put("/UsersApi/{id}")]
+		Task EditUserAsync(int id, [Body] User user);
+	}
 }

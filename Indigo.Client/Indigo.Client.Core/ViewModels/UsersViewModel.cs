@@ -4,6 +4,7 @@ using MvvmHelpers;
 using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Newtonsoft.Json;
 
 namespace Indigo.Client.Core.ViewModels
 {
@@ -15,9 +16,16 @@ namespace Indigo.Client.Core.ViewModels
 		{
 			Users = new ObservableRangeCollection<User>();
 
-			MessagingCenter.Subscribe<NewUserPage, User>(this, "AddUser", async (obj, user) =>
+			MessagingCenter.Subscribe<ModifyUserPage, User>(this, "AddUser", async (obj, user) =>
 			{
 				await Api.CreateUserAsync(user as User);
+				await UpdateAllUsersAsync();
+			});
+
+			MessagingCenter.Subscribe<ModifyUserPage, User>(this, "EditUser", async (obj, user) =>
+			{
+				User _user = user as User;
+				await Api.EditUserAsync(_user.UserId, _user);
 				await UpdateAllUsersAsync();
 			});
 		}
@@ -26,8 +34,7 @@ namespace Indigo.Client.Core.ViewModels
 		{
 			try
 			{
-				Users.Clear();
-				Users.AddRange(await Api.GetUsersAsync());
+				Users.ReplaceRange(await Api.GetUsersAsync());
 			}
 			catch (Exception)
 			{
