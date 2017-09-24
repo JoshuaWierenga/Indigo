@@ -89,6 +89,11 @@ namespace Indigo.Server.Controllers
                 return BadRequest(ModelState);
             }
 
+			if (UserExists(user.Username))
+			{
+				return BadRequest();
+			}
+
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
@@ -120,5 +125,10 @@ namespace Indigo.Server.Controllers
         {
             return _context.Users.Any(e => e.UserId == id);
         }
+
+		private bool UserExists(string Username)
+		{
+			return _context.Users.Any(e => e.Username == Username);
+		}
     }
 }

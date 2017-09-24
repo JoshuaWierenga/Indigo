@@ -19,7 +19,7 @@ namespace Indigo.Client.Core.Views
 
 		public void AddUser_Clicked(object sender, EventArgs e)
 		{
-
+			Navigation.PushAsync(new NewUserPage());
 		}
 
 		protected async override void OnAppearing()
