@@ -28,7 +28,7 @@ namespace Indigo.Client.Core.Views
 			User user = e.SelectedItem as User;
 			if (user == null) return;
 
-			await Navigation.PushAsync(new ModifyUserPage(new ModifyUserViewModel(user)));
+			await Navigation.PushAsync(new ViewUserPage(new ViewUserViewModel(user.UserId)));
 			UsersListView.SelectedItem = null;
 		}
 
@@ -38,7 +38,7 @@ namespace Indigo.Client.Core.Views
 
 			if(viewModel.Users.Count == 0)
 			{
-				await viewModel.UpdateAllUsersAsync();
+				await viewModel.UpdateUsersAsync();
 			}
 		}
 	}

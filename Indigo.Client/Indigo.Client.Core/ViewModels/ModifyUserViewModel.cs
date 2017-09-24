@@ -2,43 +2,35 @@
 
 namespace Indigo.Client.Core.ViewModels
 {
-    public class ModifyUserViewModel : BaseViewModel
+    public class ModifyUserViewModel : ViewUserViewModel
 	{
-		User internalUser;
-		public User user
+		string usernameExtraText;
+		public string UsernameExtraText
 		{
-			get => internalUser;
-			set => SetProperty(ref internalUser, value);
+			get => usernameExtraText;
+			set => SetProperty(ref usernameExtraText, value);
 		}
 
-		string usernameText;
-		public string UsernameText
+		string passwordHashExtraText;
+		public string PasswordHashExtraText
 		{
-			get => usernameText;
-			set => SetProperty(ref usernameText, value);
+			get => passwordHashExtraText;
+			set => SetProperty(ref passwordHashExtraText, value);
 		}
 
-		string passwordHashText;
-		public string PasswordHashText
+		string emailExtraText;
+		public string EmailExtraText
 		{
-			get => passwordHashText;
-			set => SetProperty(ref passwordHashText, value);
+			get => emailExtraText;
+			set => SetProperty(ref emailExtraText, value);
 		}
 
-		string emailText;
-		public string EmailText
-		{
-			get => emailText;
-			set => SetProperty(ref emailText, value);
-		}
-
-		public bool newUser;
 		public string SaveText => newUser ? "Create" : "Save";
 
-		public ModifyUserViewModel(User existingUser = null)
+		public ModifyUserViewModel(int? existingUserId = null)
 		{
-			newUser = existingUser == null;
-			user = existingUser ?? new User();
+			newUser = !existingUserId.HasValue;
+			user = newUser ? new User() : new User { UserId = existingUserId.Value };
 		}
 
 		public bool ValidateInput(string input)
@@ -46,7 +38,7 @@ namespace Indigo.Client.Core.ViewModels
 			string inputValue = user.GetType().GetProperty(input).GetValue(user) as string;
 			bool valid = !string.IsNullOrWhiteSpace(inputValue);
 
-			GetType().GetProperty(input + "Text").SetValue(this, !valid ? "Can not be empty" : "");
+			GetType().GetProperty(input + "ExtraText").SetValue(this, !valid ? "Can not be empty" : "");
 			return valid;
 		}
 	}

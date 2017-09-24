@@ -10,8 +10,7 @@
     <ContentPage.Content>
         <ListView x:Name="UsersListView"
                   ItemsSource="{Binding Users}"
-                  CachingStrategy="RecycleElement"
-                  RowHeight="60"
+                  CachingStrategy="RecycleElement"                  
                   ItemSelected="User_Clicked">
             <ListView.ItemTemplate>
                 <DataTemplate>

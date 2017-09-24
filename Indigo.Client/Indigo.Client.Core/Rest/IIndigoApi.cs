@@ -8,7 +8,10 @@ namespace Indigo.Client.Core.Rest
     public interface IIndigoApi
     {
 		[Get("/UsersApi")]
-		Task<List<User>> GetUsersAsync();
+		Task<IEnumerable<User>> GetUsersAsync();
+
+		[Get("/UsersApi/{id}")]
+		Task<User> GetUserAsync(int id);
 
 		[Post("/UsersApi")]
 		Task<User> CreateUserAsync([Body] User user);

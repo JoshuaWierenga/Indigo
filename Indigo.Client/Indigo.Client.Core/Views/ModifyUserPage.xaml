@@ -9,17 +9,17 @@
         <StackLayout Spacing="20" Padding="15">
             <StackLayout Orientation="Horizontal">
                 <Label Text="Username" FontSize="Medium" />
-                <Label Text="{Binding UsernameText}" FontSize="Medium" TextColor="Red"/>
+                <Label Text="{Binding UsernameExtraText}" FontSize="Medium" TextColor="Red"/>
             </StackLayout>
             <Entry Text="{Binding user.Username, Mode=TwoWay}" FontSize="Small" />
             <StackLayout Orientation="Horizontal">
                 <Label Text="Password" FontSize="Medium" />
-                <Label Text="{Binding PasswordHashText}" FontSize="Medium" TextColor="Red"/>
+                <Label Text="{Binding PasswordHashExtraText}" FontSize="Medium" TextColor="Red"/>
             </StackLayout>
             <Entry Text="{Binding user.PasswordHash, Mode=TwoWay}" FontSize="Small"/>
             <StackLayout Orientation="Horizontal">
                 <Label Text="Email" FontSize="Medium" />
-                <Label Text="{Binding EmailText}" FontSize="Medium" TextColor="Red"/>
+                <Label Text="{Binding EmailExtraText}" FontSize="Medium" TextColor="Red"/>
             </StackLayout>
             <Entry Text="{Binding user.Email, Mode=TwoWay}" FontSize="Small" />
         </StackLayout>

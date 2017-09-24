@@ -23,7 +23,14 @@ namespace Indigo.Server.Controllers
         [HttpGet]
         public IEnumerable<User> GetUsers()
         {
-            return _context.Users;
+            return _context.Users.Select(x =>
+				new User
+				{
+					UserId = x.UserId,
+					Username = x.Username
+				}
+
+			);
         }
 
         // GET: api/UsersApi/5

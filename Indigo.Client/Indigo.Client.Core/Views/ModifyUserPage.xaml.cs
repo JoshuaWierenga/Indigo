@@ -27,5 +27,12 @@ namespace Indigo.Client.Core.Views
 
 			await Navigation.PopToRootAsync();
 		}
+
+		protected async override void OnAppearing()
+		{
+			base.OnAppearing();
+
+			await viewModel.GetExistingUser();
+		}
 	}
 }
