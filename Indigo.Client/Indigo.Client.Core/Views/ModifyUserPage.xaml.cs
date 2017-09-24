@@ -17,7 +17,7 @@ namespace Indigo.Client.Core.Views
 			BindingContext = viewModel = existingViewModel ?? new ModifyUserViewModel();
 		}
 
-		async void Finish_Clicked(object sender, EventArgs e)
+		async void OnFinishedButtonPressed(object sender, EventArgs e)
 		{
 			if (!((viewModel.ValidateInput("Username") 
 				 & viewModel.ValidateInput("PasswordHash")
@@ -33,6 +33,12 @@ namespace Indigo.Client.Core.Views
 			base.OnAppearing();
 
 			await viewModel.GetExistingUser();
+		}
+
+		protected override bool OnBackButtonPressed()
+		{
+			Navigation.PopToRootAsync();
+			return true;
 		}
 	}
 }

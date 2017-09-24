@@ -1,4 +1,6 @@
 ﻿using Indigo.Client.Core.ViewModels;
+using Indigo.Core.Models;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -14,6 +16,11 @@ namespace Indigo.Client.Core.Views
 			InitializeComponent ();
 
 			BindingContext = viewModel = existingViewModel ?? new ViewUserViewModel();
+		}
+
+		async void OnEditButtonPressed(object sender, EventArgs e)
+		{
+			await Navigation.PushAsync(new ModifyUserPage(new ModifyUserViewModel(viewModel.user.UserId)));
 		}
 
 		protected async override void OnAppearing()
