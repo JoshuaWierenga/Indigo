@@ -18,5 +18,8 @@ namespace Indigo.Client.Core.Rest
 
 		[Put("/UsersApi/{id}")]
 		Task EditUserAsync(int id, [Body] User user);
+
+		[Delete("/UsersApi/{id}")]
+		Task DeleteUserAsync(int id);
 	}
 }

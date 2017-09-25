@@ -7,7 +7,7 @@ namespace Indigo.Client.Core.Rest
 {
     public class ServerAccess
     {
-		IIndigoApi Api = Refit.RestService.For<IIndigoApi>("http://192.168.0.2/api");
+		IIndigoApi Api = Refit.RestService.For<IIndigoApi>("http://10.32.27.153/api");
 
 		//TODO Handle error as error popup rather than crashing
 		public async Task<IEnumerable<User>> GetAllUsersAsync()
@@ -58,6 +58,20 @@ namespace Indigo.Client.Core.Rest
 			}
 			catch (Exception)
 			{
+				throw;
+			}
+		}
+
+		//TODO Handle error as error popup rather than crashing
+		public async Task DeleteUserAsync(User user)
+		{
+			try
+			{
+				await Api.DeleteUserAsync(user.UserId);
+			}
+			catch (Exception)
+			{
+
 				throw;
 			}
 		}

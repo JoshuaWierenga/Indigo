@@ -1,6 +1,7 @@
 ﻿using Indigo.Client.Core.ViewModels;
 using Indigo.Core.Models;
 using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -36,10 +37,11 @@ namespace Indigo.Client.Core.Views
 		{
 			base.OnAppearing();
 
-			if(viewModel.Users.Count == 0)
+			Device.StartTimer(TimeSpan.FromSeconds(10), () =>
 			{
-				await viewModel.UpdateUsersAsync();
-			}
+				viewModel.UpdateUsersAsync();
+				return true;
+			});
 		}
 	}
 }

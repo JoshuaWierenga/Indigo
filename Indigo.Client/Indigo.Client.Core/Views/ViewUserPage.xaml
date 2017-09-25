@@ -4,6 +4,7 @@
              x:Class="Indigo.Client.Core.Views.ViewUserPage">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Edit" Clicked="OnEditButtonPressed" />
+        <ToolbarItem Text="Delete" Clicked="OnDeleteButtonPressed" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout Spacing="20" Padding="15">
