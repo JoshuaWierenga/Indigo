@@ -12,7 +12,7 @@ namespace Indigo.Client.Core
 		{
 			InitializeComponent();
 
-			MainPage = new NavigationPage(new UsersPage());
+			MainPage = new NavigationPage(new LoginPage());
 		}
 
 		protected override void OnStart()
