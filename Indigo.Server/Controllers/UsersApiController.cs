@@ -42,7 +42,7 @@ namespace Indigo.Server.Controllers
 				return NotFound();
 			}
 
-			if (user.PasswordHash != user.PasswordHash)
+			if (foundUser.PasswordHash != user.PasswordHash)
 			{
 				return Forbid();
 			}
