@@ -19,38 +19,36 @@ namespace Indigo.Server.Controllers
             _context = context;
         }
 
-        // GET: api/UsersApi
-        [HttpGet]
-        public IEnumerable<User> GetUsers()
-        {
-            return _context.Users.Select(x =>
-				new User
-				{
-					UserId = x.UserId,
-					Username = x.Username
-				}
+		// GET: api/UserApi
+		/// <summary>
+		/// Takes a partial user object and checks if password is correct
+		/// if password is correct then full user object is returned
+		/// else return
+		/// </summary>
+		/// <param name="user">Partial user object containing username and password</param>
+		/// <returns></returns>
+		[HttpGet]
+		public async Task<IActionResult> Login([FromBody] User user)
+		{
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
 
-			);
-        }
+			var foundUser = await _context.Users.SingleOrDefaultAsync(m => m.Username == user.Username);
 
-        // GET: api/UsersApi/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetUser([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+			if (user == null)
+			{
+				return NotFound();
+			}
 
-            var user = await _context.Users.SingleOrDefaultAsync(m => m.UserId == id);
+			if (user.PasswordHash != user.PasswordHash)
+			{
+				return Forbid();
+			}
 
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(user);
-        }
+			return Ok(foundUser);
+		}
 
         // PUT: api/UsersApi/5
         [HttpPut("{id}")]

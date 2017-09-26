@@ -4,11 +4,21 @@
              x:Class="Indigo.Client.Core.Views.LoginPage">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Login" FontSize="Large" HorizontalOptions="Center"/>
-            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-                <Label Text="Username:" />
-                <Entry Text="{Binding User.Username, Mode=OneWayToSource}" WidthRequest="200"/>
-            </StackLayout>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="10*" />
+                    <ColumnDefinition Width="20*" />
+                    <ColumnDefinition Width="40*" />
+                    <ColumnDefinition Width="20*" />
+                    <ColumnDefinition Width="10*" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Grid.ColumnSpan="3" Text="Login" FontSize="Large" VerticalOptions="Center" HorizontalOptions="Center"/>
+                <Label Grid.Row="2" Grid.Column="1" Text="Username:" VerticalOptions="Center" HorizontalOptions="Center"/>
+                <Entry Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Text="{Binding User.Username, Mode=OneWayToSource}"/>
+                <Label Grid.Row="3" Grid.Column="1" Text="Password:" VerticalOptions="Center" HorizontalOptions="CenterAndExpand"/>
+                <Entry Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Text="{Binding User.PasswordHash, Mode=OneWayToSource}"/>
+                <Button Grid.Row="4" Grid.Column="2" Text="Login" HorizontalOptions="Fill" Pressed="Login_Clicked"/>
+            </Grid>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

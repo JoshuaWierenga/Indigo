@@ -1,7 +1,6 @@
 ﻿using Indigo.Client.Core.ViewModels;
 using Indigo.Core.Models;
 using System;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
