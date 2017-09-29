@@ -24,7 +24,7 @@ namespace Indigo.Client.Core.ViewModels
 		{
 			if (!newUser)
 			{
-				user = await Server.GetUserAsync(user.UserId);
+				//user = await Server.GetUserAsync(user.UserId);
 			}
 		}
 	}

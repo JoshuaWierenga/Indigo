@@ -1,4 +1,5 @@
 ﻿using Indigo.Client.Core.ViewModels;
+using Indigo.Core.Models;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -19,6 +20,9 @@ namespace Indigo.Client.Core.Views
 
 		async void Login_Clicked(object sender, EventArgs e)
 		{
+			User newUser = await viewModel.Server.CheckLoginAsync(viewModel.Username, viewModel.PasswordHash);
+
+			await DisplayAlert("HM", (newUser == null).ToString(), "meh");
 			
 		}
 	}

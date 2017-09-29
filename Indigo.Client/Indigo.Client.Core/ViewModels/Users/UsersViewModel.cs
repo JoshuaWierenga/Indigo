@@ -29,7 +29,7 @@ namespace Indigo.Client.Core.ViewModels
 
 		public async Task UpdateUsersAsync()
 		{
-			Users.ReplaceRange(await Server.GetAllUsersAsync());
+			//Users.ReplaceRange(await Server.GetAllUsersAsync());
 		}
 	}
 }

@@ -1,37 +1,26 @@
 ﻿using Indigo.Core.Models;
+using Refit;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Indigo.Client.Core.Rest
 {
     public class ServerAccess
     {
-		IIndigoApi Api = Refit.RestService.For<IIndigoApi>("http://10.32.27.153/api");
+		IIndigoApi Api = Refit.RestService.For<IIndigoApi>("http://10.32.156.91/api");
 
 		//TODO Handle error as error popup rather than crashing
-		public async Task<IEnumerable<User>> GetAllUsersAsync()
+		public async Task<User> CheckLoginAsync(string username, string passwordHash)
 		{
 			try
 			{
-				return await Api.GetUsersAsync();
+				return await Api.CheckLoginAsync(username, passwordHash);
 			}
-			catch (Exception)
+			catch (ApiException e)
 			{
-
-				throw;
-			}
-		}
-
-		//TODO Handle error as error popup rather than crashing
-		public async Task<User> GetUserAsync(int id)
-		{
-			try
-			{
-				return await Api.GetUserAsync(id);
-			}
-			catch (Exception)
-			{
+				if (e.StatusCode == HttpStatusCode.NotFound) return null;
 				throw;
 			}
 		}

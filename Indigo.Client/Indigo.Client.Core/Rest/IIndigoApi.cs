@@ -1,17 +1,14 @@
 ﻿using Indigo.Core.Models;
 using Refit;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Indigo.Client.Core.Rest
 {
     public interface IIndigoApi
     {
-		[Get("/UsersApi")]
-		Task<IEnumerable<User>> GetUsersAsync();
 
-		[Get("/UsersApi/{id}")]
-		Task<User> GetUserAsync(int id);
+		[Get("/UsersApi")]
+		Task<User> CheckLoginAsync([Header("Username")] string Username, [Header("PasswordHash")] string PasswordHash);
 
 		[Post("/UsersApi")]
 		Task<User> CreateUserAsync([Body] User user);

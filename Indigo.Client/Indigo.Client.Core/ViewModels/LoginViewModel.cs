@@ -1,6 +1,6 @@
 ﻿namespace Indigo.Client.Core.ViewModels
 {
-    public class LoginViewModel :BaseViewModel
+    public class LoginViewModel : BaseViewModel
     {
 		string username;
 		public string Username

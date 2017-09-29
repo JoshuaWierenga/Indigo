@@ -28,23 +28,18 @@ namespace Indigo.Server.Controllers
 		/// <param name="user">Partial user object containing username and password</param>
 		/// <returns></returns>
 		[HttpGet]
-		public async Task<IActionResult> Login([FromBody] User user)
+		public async Task<IActionResult> CheckLogin([FromHeader] string Username, [FromHeader] string PasswordHash)
 		{
 			if (!ModelState.IsValid)
 			{
 				return BadRequest(ModelState);
 			}
 
-			var foundUser = await _context.Users.SingleOrDefaultAsync(m => m.Username == user.Username);
+			var foundUser = await _context.Users.SingleOrDefaultAsync(m => m.Username == Username);
 
-			if (user == null)
+			if (foundUser == null || foundUser.PasswordHash != PasswordHash)
 			{
 				return NotFound();
-			}
-
-			if (foundUser.PasswordHash != user.PasswordHash)
-			{
-				return Forbid();
 			}
 
 			return Ok(foundUser);
