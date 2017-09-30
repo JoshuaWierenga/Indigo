@@ -22,7 +22,10 @@ namespace Indigo.Client.Core.Views
 		{
 			User newUser = await viewModel.Server.CheckLoginAsync(viewModel.Username, viewModel.PasswordHash);
 
-			await DisplayAlert("HM", (newUser == null).ToString(), "meh");
+			if(newUser != null)
+			{
+				await Navigation.PushAsync(new LoggedInPage(newUser));
+			}
 			
 		}
 	}

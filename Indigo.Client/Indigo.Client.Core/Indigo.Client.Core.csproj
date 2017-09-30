@@ -18,11 +18,4 @@
   <ItemGroup>
     <Compile Update="**\*.xaml.cs" DependentUpon="%(Filename)" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Views\LoginPage.xaml.cs">
-      <SubType>Code</SubType>
-      <DependentUpon>LoginPage.xaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
 </Project>

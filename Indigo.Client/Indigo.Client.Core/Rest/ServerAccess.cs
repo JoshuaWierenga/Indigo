@@ -1,7 +1,6 @@
 ﻿using Indigo.Core.Models;
 using Refit;
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -9,7 +8,7 @@ namespace Indigo.Client.Core.Rest
 {
     public class ServerAccess
     {
-		IIndigoApi Api = Refit.RestService.For<IIndigoApi>("http://10.32.156.91/api");
+		IIndigoApi Api = RestService.For<IIndigoApi>("http://192.168.0.2/api");
 
 		//TODO Handle error as error popup rather than crashing
 		public async Task<User> CheckLoginAsync(string username, string passwordHash)

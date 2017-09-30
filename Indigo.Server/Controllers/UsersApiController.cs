@@ -22,8 +22,7 @@ namespace Indigo.Server.Controllers
 		// GET: api/UserApi
 		/// <summary>
 		/// Takes a partial user object and checks if password is correct
-		/// if password is correct then full user object is returned
-		/// else return
+		/// and returns the full user object if it is
 		/// </summary>
 		/// <param name="user">Partial user object containing username and password</param>
 		/// <returns></returns>
