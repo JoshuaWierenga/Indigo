@@ -2,7 +2,7 @@
 
 namespace Indigo.Client.Core.ViewModels
 {
-    public class TestLoggedIn : BaseViewModel
+    public class ConversationsViewModel : BaseViewModel
     {
 		User internalUser;
 		public User User
@@ -11,7 +11,7 @@ namespace Indigo.Client.Core.ViewModels
 			set => SetProperty(ref internalUser, value);
 		}
 
-		public TestLoggedIn(User existingUser)
+		public ConversationsViewModel(User existingUser)
 		{
 			User = existingUser;
 		}

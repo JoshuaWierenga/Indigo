@@ -24,7 +24,7 @@ namespace Indigo.Client.Core.Views
 
 			if(newUser != null)
 			{
-				await Navigation.PushAsync(new LoggedInPage(newUser));
+				await Navigation.PushAsync(new ConversationsPage(newUser));
 			}
 			
 		}
