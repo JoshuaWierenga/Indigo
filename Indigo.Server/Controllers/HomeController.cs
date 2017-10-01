@@ -3,6 +3,7 @@ using Indigo.Server.Context;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Indigo.Server.Controllers
@@ -16,13 +17,17 @@ namespace Indigo.Server.Controllers
 			_context = context;
 		}
 
-		public ActionResult Index()
+		public async Task<ActionResult> Index()
         {
 			int? currentUser = HttpContext.Session.GetInt32("CurrentUser");
 
 			if (currentUser.HasValue)
 			{
-				return RedirectToAction("Details", "Users",  new { id = currentUser });
+				var foundUser = await _context.Users
+				.Include(u => u.UserConversations).ThenInclude(uc => uc.Conversation)
+				.SingleOrDefaultAsync(m => m.UserId == currentUser);
+
+				return View(_context.UserConversations.Where(x => x.UserId == currentUser));
 			}
             return View("Login");
         }

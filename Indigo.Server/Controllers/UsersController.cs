@@ -71,13 +71,6 @@ namespace Indigo.Server.Controllers
                 return NotFound();
             }
 
-			int? currentUser = HttpContext.Session.GetInt32("CurrentUser");
-
-			if (!currentUser.HasValue || currentUser != id)
-			{
-				return BadRequest();
-			}
-
             var user = await _context.Users.SingleOrDefaultAsync(m => m.UserId == id);
             if (user == null)
             {

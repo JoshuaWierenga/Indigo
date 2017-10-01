@@ -34,9 +34,23 @@ namespace Indigo.Server.Controllers
 				return BadRequest(ModelState);
 			}
 
-			var foundUser = await _context.Users.SingleOrDefaultAsync(m => m.Username == Username);
+			var foundUser = await _context.Users
+				.Select(u => new
+				{
+					u.UserId,
+					u.Username,
+					u.PasswordHash,
+					u.Email,
+					UserConversations = u.UserConversations.Select(uc => new
+					{
+						uc.ConversationId,
+						uc.Conversation,
+						uc.isAdmin
+					})
+				})
+				.SingleOrDefaultAsync(u => u.Username == Username && u.PasswordHash == PasswordHash);
 
-			if (foundUser == null || foundUser.PasswordHash != PasswordHash)
+			if (foundUser == null)
 			{
 				return NotFound();
 			}
@@ -54,7 +68,21 @@ namespace Indigo.Server.Controllers
 				return BadRequest(ModelState);
 			}
 
-			var user = await _context.Users.SingleOrDefaultAsync(m => m.UserId == id);
+			var user = await _context.Users
+				.Select(u => new
+				{
+					u.UserId,
+					u.Username,
+					u.PasswordHash,
+					u.Email,
+					UserConversations = u.UserConversations.Select(uc => new
+					{
+						uc.ConversationId,
+						uc.Conversation,
+						uc.isAdmin
+					})
+				})
+				.SingleOrDefaultAsync(u => u.UserId == id);
 			if (user == null)
 			{
 				return NotFound();

@@ -8,7 +8,7 @@
   <ItemGroup>
     <PackageReference Include="Refit" Version="4.0.1" />
     <PackageReference Include="Refractored.MvvmHelpers" Version="1.3.2.47-beta" />
-    <PackageReference Include="Xamarin.Forms" Version="2.4.0.275-pre3" />
+    <PackageReference Include="Xamarin.Forms" Version="2.4.0.282" />
   </ItemGroup>
 
   <ItemGroup>

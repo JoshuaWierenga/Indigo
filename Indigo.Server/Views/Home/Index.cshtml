@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Indigo.Core.Models.UserConversation>
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+<h2>Conversations</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Conversation.ConversationName)</th>
+            <th>@Html.DisplayNameFor(model => model.Conversation.isGroupChat)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.Conversation.ConversationName)</td>
+            <td>@Html.DisplayFor(modelItem => item.Conversation.isGroupChat)</td>
+            <td>
+                <a asp-action="AccessConversation" asp-route-id="@item.ConversationId">Access</a> |
+                <a asp-action="LeaveConversation" asp-route-id="@item.ConversationId">Leave</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
