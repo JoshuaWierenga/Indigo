@@ -22,6 +22,7 @@ namespace Indigo.Server
             services.AddMvc();
 			services.AddDbContext<IndigoContext>(options =>
 				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+			services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,6 +39,8 @@ namespace Indigo.Server
             }
 
             app.UseStaticFiles();
+
+			app.UseSession();
 
             app.UseMvc(routes =>
             {

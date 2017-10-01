@@ -19,7 +19,7 @@ namespace Indigo.Server.Controllers
             _context = context;
         }
 
-		// GET: api/UserApi
+		// GET: api/UsersApi
 		/// <summary>
 		/// Takes a partial user object and checks if password is correct
 		/// and returns the full user object if it is
@@ -43,9 +43,29 @@ namespace Indigo.Server.Controllers
 
 			return Ok(foundUser);
 		}
+		
+		//TODO remove
+		// GET: api/UsersApi/5
+		[HttpGet("{id}")]
+		public async Task<IActionResult> GetUser([FromRoute] int id)
+		{
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
 
-        // PUT: api/UsersApi/5
-        [HttpPut("{id}")]
+			var user = await _context.Users.SingleOrDefaultAsync(m => m.UserId == id);
+			if (user == null)
+			{
+				return NotFound();
+			}
+
+			return Ok(user);
+
+		}
+
+		// PUT: api/UsersApi/5
+		[HttpPut("{id}")]
         public async Task<IActionResult> PutUser([FromRoute] int id, [FromBody] User user)
         {
             if (!ModelState.IsValid)
