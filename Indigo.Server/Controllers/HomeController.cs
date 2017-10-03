@@ -24,7 +24,10 @@ namespace Indigo.Server.Controllers
 			if (currentUser.HasValue)
 			{
 				var foundUser = await _context.Users
-				.Include(u => u.UserConversations).ThenInclude(uc => uc.Conversation)
+				.Include(u => u.UserConversations)
+					.ThenInclude(uc => uc.Conversation)
+						.ThenInclude(ucc => ucc.UserConversations)
+							.ThenInclude(uccuc => uccuc.User)
 				.SingleOrDefaultAsync(m => m.UserId == currentUser);
 
 				return View(_context.UserConversations.Where(x => x.UserId == currentUser));

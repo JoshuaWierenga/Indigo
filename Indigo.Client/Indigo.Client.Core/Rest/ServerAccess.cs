@@ -17,13 +17,22 @@ namespace Indigo.Client.Core.Rest
 			{
 				return await Api.GetUserAsync(username, passwordHash);
 			}
+			catch (ApiException e)
+			{
+				if (e.StatusCode == System.Net.HttpStatusCode.Forbidden)
+				{
+					//Check for this and display to user
+					MessagingCenter.Send(this, "Forbidden");
+					return null;
+				}
+				throw;
+			}
 			catch (HttpRequestException)
 			{
 				//Check for this and display to user
 				MessagingCenter.Send(this, "HttpRequestException");
-			}
-
-			return null;
+				return null;
+			}	
 		}
 
 		//TODO Handle error as error popup rather than crashing

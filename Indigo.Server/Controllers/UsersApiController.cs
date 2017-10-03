@@ -65,10 +65,10 @@ namespace Indigo.Server.Controllers
 
 			if (foundUser == null)
 			{
-				return NotFound();
+				return StatusCode(403);
 			}
 
-			return Ok(foundUser);
+			return Accepted(foundUser);
 		}
 
 		// PUT: api/UsersApi/5
