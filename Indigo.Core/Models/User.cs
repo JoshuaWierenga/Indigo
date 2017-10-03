@@ -8,6 +8,6 @@ namespace Indigo.Core.Models
 		public string Username { get; set; }
 		public string PasswordHash { get; set; }
 		public string Email { get; set; }
-		public ICollection<UserConversation> UserConversations { get; set; }
+		public List<UserConversation> UserConversations { get; set; }
     }
 }

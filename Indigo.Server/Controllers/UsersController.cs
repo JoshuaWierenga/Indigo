@@ -54,7 +54,7 @@ namespace Indigo.Server.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UserId,Username,PasswordHash,Email")] User user)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && !UserExists(user.Username))
             {
                 _context.Add(user);
                 await _context.SaveChangesAsync();
@@ -147,5 +147,9 @@ namespace Indigo.Server.Controllers
         {
             return _context.Users.Any(e => e.UserId == id);
         }
-    }
+		private bool UserExists(string Username)
+		{
+			return _context.Users.Any(e => e.Username == Username);
+		}
+	}
 }

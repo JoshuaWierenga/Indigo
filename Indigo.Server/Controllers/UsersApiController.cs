@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,16 +7,16 @@ using Indigo.Server.Context;
 
 namespace Indigo.Server.Controllers
 {
-    [Produces("application/json")]
-    [Route("api/UsersApi")]
-    public class UsersApiController : Controller
-    {
-        private readonly IndigoContext _context;
+	[Produces("application/json")]
+	[Route("api/UsersApi")]
+	public class UsersApiController : Controller
+	{
+		private readonly IndigoContext _context;
 
-        public UsersApiController(IndigoContext context)
-        {
-            _context = context;
-        }
+		public UsersApiController(IndigoContext context)
+		{
+			_context = context;
+		}
 
 		// GET: api/UsersApi
 		/// <summary>
@@ -27,7 +26,7 @@ namespace Indigo.Server.Controllers
 		/// <param name="user">Partial user object containing username and password</param>
 		/// <returns></returns>
 		[HttpGet]
-		public async Task<IActionResult> CheckLogin([FromHeader] string Username, [FromHeader] string PasswordHash)
+		public async Task<IActionResult> GetUser([FromHeader] string Username, [FromHeader] string PasswordHash)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -43,9 +42,23 @@ namespace Indigo.Server.Controllers
 					u.Email,
 					UserConversations = u.UserConversations.Select(uc => new
 					{
-						uc.ConversationId,
-						uc.Conversation,
-						uc.isAdmin
+						Conversation = new
+						{
+							uc.Conversation.ConversationId,
+							uc.Conversation.ConversationName,
+							uc.Conversation.isGroupChat,
+							UserConversations = uc.Conversation.UserConversations
+								.Where(uccuc => uccuc.User.Username != Username)
+								.Select(uccuc => new
+								{
+									User = new
+									{
+										uccuc.User.Username
+									},
+									uccuc.isAdmin
+								}),
+							uc.isAdmin
+						}
 					})
 				})
 				.SingleOrDefaultAsync(u => u.Username == Username && u.PasswordHash == PasswordHash);
@@ -56,40 +69,6 @@ namespace Indigo.Server.Controllers
 			}
 
 			return Ok(foundUser);
-		}
-		
-		//TODO remove
-		// GET: api/UsersApi/5
-		[HttpGet("{id}")]
-		public async Task<IActionResult> GetUser([FromRoute] int id)
-		{
-			if (!ModelState.IsValid)
-			{
-				return BadRequest(ModelState);
-			}
-
-			var user = await _context.Users
-				.Select(u => new
-				{
-					u.UserId,
-					u.Username,
-					u.PasswordHash,
-					u.Email,
-					UserConversations = u.UserConversations.Select(uc => new
-					{
-						uc.ConversationId,
-						uc.Conversation,
-						uc.isAdmin
-					})
-				})
-				.SingleOrDefaultAsync(u => u.UserId == id);
-			if (user == null)
-			{
-				return NotFound();
-			}
-
-			return Ok(user);
-
 		}
 
 		// PUT: api/UsersApi/5

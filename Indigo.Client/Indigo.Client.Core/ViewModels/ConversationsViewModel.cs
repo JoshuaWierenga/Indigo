@@ -4,11 +4,11 @@ namespace Indigo.Client.Core.ViewModels
 {
     public class ConversationsViewModel : BaseViewModel
     {
-		User internalUser;
+		User _User;
 		public User User
 		{
-			get => internalUser;
-			set => SetProperty(ref internalUser, value);
+			get =>_User;
+			set => SetProperty(ref _User, value);
 		}
 
 		public ConversationsViewModel(User existingUser)

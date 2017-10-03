@@ -1,27 +1,29 @@
 ﻿using Indigo.Core.Models;
 using Refit;
 using System;
-using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace Indigo.Client.Core.Rest
 {
-    public class ServerAccess
-    {
+	public class ServerAccess
+	{
 		IIndigoApi Api = RestService.For<IIndigoApi>("http://192.168.0.2/api");
 
-		//TODO Handle error as error popup rather than crashing
-		public async Task<User> CheckLoginAsync(string username, string passwordHash)
+		public async Task<User> GetUserAsync(string username, string passwordHash)
 		{
 			try
 			{
-				return await Api.CheckLoginAsync(username, passwordHash);
+				return await Api.GetUserAsync(username, passwordHash);
 			}
-			catch (ApiException e)
+			catch (HttpRequestException)
 			{
-				if (e.StatusCode == HttpStatusCode.NotFound) return null;
-				throw;
+				//Check for this and display to user
+				MessagingCenter.Send(this, "HttpRequestException");
 			}
+
+			return null;
 		}
 
 		//TODO Handle error as error popup rather than crashing
@@ -65,4 +67,3 @@ namespace Indigo.Client.Core.Rest
 		}
 	}
 }
- 

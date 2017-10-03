@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Helpers="clr-namespace:Indigo.Client.Core.Helpers"
              x:Class="Indigo.Client.Core.Views.ConversationsPage">
     <ContentPage.Content>
         <StackLayout>
@@ -9,7 +10,16 @@
             CachingStrategy="RecycleElement">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        - <TextCell Text="{Binding Conversation.ConversationName}" />
+                        <ViewCell>
+                            <StackLayout>
+                                <Label Text="{Binding Conversation.ConversationName}" FontSize="25"/>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="Private Chat with" IsVisible="{Binding Conversation.isGroupChat, Converter={Helpers:InverseBoolConverter}}" />
+                                    <Label Text="{Binding Conversation.UserConversations[0].User.Username}" IsVisible="{Binding Conversation.isGroupChat, Converter={Helpers:InverseBoolConverter}}" />
+                                    <!--<Label Text="New Message(s)" TextColor="Red" HorizontalOptions="EndAndExpand"/>-->
+                                </StackLayout>
+                            </StackLayout>
+                        </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
 

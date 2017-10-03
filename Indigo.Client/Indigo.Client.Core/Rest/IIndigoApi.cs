@@ -8,7 +8,7 @@ namespace Indigo.Client.Core.Rest
     {
 
 		[Get("/UsersApi")]
-		Task<User> CheckLoginAsync([Header("Username")] string Username, [Header("PasswordHash")] string PasswordHash);
+		Task<User> GetUserAsync([Header("Username")] string Username, [Header("PasswordHash")] string PasswordHash);
 
 		[Post("/UsersApi")]
 		Task<User> CreateUserAsync([Body] User user);
