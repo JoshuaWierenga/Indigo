@@ -21,7 +21,7 @@ namespace Indigo.Client.Core.Rest
 			{
 				if (e.StatusCode == System.Net.HttpStatusCode.Forbidden)
 				{
-					//Check for this and display to user
+					//TODO Check for this and display to user
 					MessagingCenter.Send(this, "Forbidden");
 					return null;
 				}
@@ -29,7 +29,7 @@ namespace Indigo.Client.Core.Rest
 			}
 			catch (HttpRequestException)
 			{
-				//Check for this and display to user
+				//TODO Check for this and display to user
 				MessagingCenter.Send(this, "HttpRequestException");
 				return null;
 			}	
