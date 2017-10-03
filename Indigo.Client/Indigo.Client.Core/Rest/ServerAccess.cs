@@ -32,7 +32,7 @@ namespace Indigo.Client.Core.Rest
 				//TODO Check for this and display to user
 				MessagingCenter.Send(this, "HttpRequestException");
 				return null;
-			}	
+			}
 		}
 
 		//TODO Handle error as error popup rather than crashing
@@ -72,6 +72,28 @@ namespace Indigo.Client.Core.Rest
 			{
 
 				throw;
+			}
+		}
+
+		public async Task DeleteUserConversationAsync(User user, Conversation conversation)
+		{
+			try
+			{
+				await Api.DeleteUserConversationAsync(user.Username, user.PasswordHash, user.UserId, conversation.ConversationId);
+			}
+			catch (ApiException e)
+			{
+				if (e.StatusCode == System.Net.HttpStatusCode.Forbidden)
+				{
+					//TODO Check for this and display to user
+					MessagingCenter.Send(this, "Forbidden");
+				}
+				else throw;
+			}
+			catch (HttpRequestException)
+			{
+				//TODO Check for this and display to user
+				MessagingCenter.Send(this, "HttpRequestException");
 			}
 		}
 	}

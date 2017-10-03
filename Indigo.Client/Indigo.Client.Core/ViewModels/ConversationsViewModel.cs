@@ -1,4 +1,5 @@
 ﻿using Indigo.Core.Models;
+using System.Threading.Tasks;
 
 namespace Indigo.Client.Core.ViewModels
 {
@@ -14,6 +15,12 @@ namespace Indigo.Client.Core.ViewModels
 		public ConversationsViewModel(User existingUser)
 		{
 			User = existingUser;
+		}
+
+		public async Task DeleteUserConversationAsync(Conversation conversation)
+		{
+			await Server.DeleteUserConversationAsync(User, conversation);
+			User = await Server.GetUserAsync(User.Username, User.PasswordHash);
 		}
 	}
 }

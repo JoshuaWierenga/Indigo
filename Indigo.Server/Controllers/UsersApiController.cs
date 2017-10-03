@@ -147,7 +147,38 @@ namespace Indigo.Server.Controllers
             return Ok(user);
         }
 
-        private bool UserExists(int id)
+		[HttpDelete("{userid}/{conversationid}")]
+		public async Task<IActionResult> DelteUserCollection([FromHeader] string Username, [FromHeader] string PasswordHash ,
+			[FromRoute] int userid, [FromRoute] int conversationid)
+		{
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
+
+			var foundUser = await _context.Users
+				.SingleOrDefaultAsync(u => u.UserId == userid && u.Username == Username && u.PasswordHash == PasswordHash);
+
+			if (foundUser == null)
+			{
+				return StatusCode(403);
+			}
+
+			var foundUserConversation = await _context.UserConversations
+				.SingleOrDefaultAsync(uc => uc.UserId == userid && uc.ConversationId == conversationid);
+
+			if (foundUserConversation == null)
+			{
+				return NotFound();
+			}
+
+			_context.UserConversations.Remove(foundUserConversation);
+			await _context.SaveChangesAsync();
+
+			return Ok();
+		}
+
+		private bool UserExists(int id)
         {
             return _context.Users.Any(e => e.UserId == id);
         }

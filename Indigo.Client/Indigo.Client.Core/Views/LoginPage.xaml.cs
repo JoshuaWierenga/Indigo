@@ -20,13 +20,14 @@ namespace Indigo.Client.Core.Views
 
 		async void Login_Clicked(object sender, EventArgs e)
 		{
+			((Button)sender).IsEnabled = false;
 			User newUser = await viewModel.Server.GetUserAsync(viewModel.Username, viewModel.PasswordHash);
 
 			if(newUser != null)
 			{
 				await Navigation.PushAsync(new ConversationsPage(newUser));
 			}
-			
+			((Button)sender).IsEnabled = true;
 		}
 	}
 }

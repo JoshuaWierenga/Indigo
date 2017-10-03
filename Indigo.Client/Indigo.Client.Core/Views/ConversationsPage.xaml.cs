@@ -1,5 +1,6 @@
 ﻿using Indigo.Client.Core.ViewModels;
 using Indigo.Core.Models;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -16,5 +17,13 @@ namespace Indigo.Client.Core.Views
 
 			BindingContext = viewModel = new ConversationsViewModel(existingUser);
 		}
-    }
+
+		async void Item_Swiped(object sender, EventArgs e)
+		{
+			MenuItem menuItem = (MenuItem)sender;
+			UserConversation selectedUserConversation = (UserConversation)menuItem.CommandParameter;
+
+			await viewModel.DeleteUserConversationAsync(selectedUserConversation.Conversation);
+		}
+	}
 }

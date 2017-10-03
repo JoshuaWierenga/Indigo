@@ -6,7 +6,6 @@ namespace Indigo.Client.Core.Rest
 {
     public interface IIndigoApi
     {
-
 		[Get("/UsersApi")]
 		Task<User> GetUserAsync([Header("Username")] string Username, [Header("PasswordHash")] string PasswordHash);
 
@@ -18,5 +17,8 @@ namespace Indigo.Client.Core.Rest
 
 		[Delete("/UsersApi/{id}")]
 		Task DeleteUserAsync(int id);
+
+		[Delete("/UsersApi/{userid}/{conversationid}")]
+		Task DeleteUserConversationAsync([Header("Username")] string Username, [Header("PasswordHash")] string PasswordHash, int userid, int conversationid);
 	}
 }

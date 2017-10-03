@@ -12,6 +12,9 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
+                            <ViewCell.ContextActions>
+                                <MenuItem Clicked="Item_Swiped" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True"/>
+                            </ViewCell.ContextActions>
                             <StackLayout>
                                 <Label Text="{Binding Conversation.ConversationName}" FontSize="25"/>
                                 <StackLayout Orientation="Horizontal">
