@@ -9,7 +9,7 @@ namespace Indigo.Client.Core.Rest
 {
 	public class ServerAccess
 	{
-		IIndigoApi Api = RestService.For<IIndigoApi>("http://192.168.0.2/api");
+		IIndigoApi Api = RestService.For<IIndigoApi>("http://192.168.42.242/api");
 
 		public async Task<User> GetUserAsync(string username, string passwordHash)
 		{

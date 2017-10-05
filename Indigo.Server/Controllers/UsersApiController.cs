@@ -147,8 +147,12 @@ namespace Indigo.Server.Controllers
             return Ok(user);
         }
 
+		//TODO handle group chats
+		//if removing user when users > 2 then just remove user
+		//if removing user when users = 2 the do nothing and make deleter remove group entirely
+		//TODO handle messages
 		[HttpDelete("{userid}/{conversationid}")]
-		public async Task<IActionResult> DelteUserCollection([FromHeader] string Username, [FromHeader] string PasswordHash ,
+		public async Task<IActionResult> DelteUserCollection([FromHeader] string Username, [FromHeader] string PasswordHash,
 			[FromRoute] int userid, [FromRoute] int conversationid)
 		{
 			if (!ModelState.IsValid)
@@ -165,14 +169,17 @@ namespace Indigo.Server.Controllers
 			}
 
 			var foundUserConversation = await _context.UserConversations
+				.Include(uc => uc.Conversation)
+					.ThenInclude(c => c.UserConversations)
 				.SingleOrDefaultAsync(uc => uc.UserId == userid && uc.ConversationId == conversationid);
 
-			if (foundUserConversation == null)
+			if (foundUserConversation == null || foundUserConversation.Conversation.isGroupChat)
 			{
 				return NotFound();
 			}
 
-			_context.UserConversations.Remove(foundUserConversation);
+			_context.UserConversations.RemoveRange(foundUserConversation.Conversation.UserConversations);
+			_context.Conversations.Remove(foundUserConversation.Conversation);
 			await _context.SaveChangesAsync();
 
 			return Ok();
