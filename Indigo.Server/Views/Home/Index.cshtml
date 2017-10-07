@@ -20,7 +20,7 @@
             </td>
             <td>
                 <a asp-action="AccessConversation" asp-route-id="@item.ConversationId">Access</a> |
-                <a asp-action="LeaveConversation" asp-route-id="@item.ConversationId">Leave</a>
+                <a asp-action="LeaveConversation" asp-route-id="@item.ConversationId">@(item.Conversation.isGroupChat ? "Leave" : "Delete")</a>
             </td>
         </tr>
 }

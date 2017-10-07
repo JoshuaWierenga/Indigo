@@ -9,14 +9,23 @@ namespace Indigo.Client.Core.Rest
 		[Get("/UsersApi")]
 		Task<User> GetUserAsync([Header("Username")] string Username, [Header("PasswordHash")] string PasswordHash);
 
-		[Post("/UsersApi")]
-		Task<User> CreateUserAsync([Body] User user);
+		[Get("/UsersApi/{publicusername}")]
+		Task<User> GetPublicUserAsync([Header("Username")] string Username, [Header("PasswordHash")] string PasswordHash, string publicusername);
 
-		[Put("/UsersApi/{id}")]
-		Task EditUserAsync(int id, [Body] User user);
+		//[Post("/UsersApi")]
+		//Task<User> CreateUserAsync([Body] User user);
 
-		[Delete("/UsersApi/{id}")]
-		Task DeleteUserAsync(int id);
+		//[Put("/UsersApi/{id}")]
+		//Task EditUserAsync(int id, [Body] User user);
+
+		//[Delete("/UsersApi/{id}")]
+		//Task DeleteUserAsync(int id);
+
+		[Put("/ConversationsApi")]
+		Task<Conversation> CreateConversationAsync([Header("Username")] string Username, [Header("PasswordHash")] string PasswordHash, Conversation conversation);
+
+		[Post("/ConversationsApi/{conversationid}/{userid}")]
+		Task<UserConversation> CreateUserConversationAsync([Header("Username")] string Username, [Header("PasswordHash")] string PasswordHash, int userid, int conversationid);
 
 		[Delete("/UsersApi/{userid}/{conversationid}")]
 		Task DeleteUserConversationAsync([Header("Username")] string Username, [Header("PasswordHash")] string PasswordHash, int userid, int conversationid);

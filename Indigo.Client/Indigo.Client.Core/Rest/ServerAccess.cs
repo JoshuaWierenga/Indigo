@@ -1,6 +1,5 @@
 ﻿using Indigo.Core.Models;
 using Refit;
-using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -35,8 +34,32 @@ namespace Indigo.Client.Core.Rest
 			}
 		}
 
+		public async Task<User> GetPublicUserAsync(User authUser, string publicusername)
+		{
+			try
+			{
+				return await Api.GetPublicUserAsync(authUser.Username, authUser.PasswordHash, publicusername);
+			}
+			catch (ApiException e)
+			{
+				if (e.StatusCode == System.Net.HttpStatusCode.Forbidden)
+				{
+					//TODO Check for this and display to user
+					MessagingCenter.Send(this, "Forbidden");
+					return null;
+				}
+				throw;
+			}
+			catch (HttpRequestException)
+			{
+				//TODO Check for this and display to user
+				MessagingCenter.Send(this, "HttpRequestException");
+				return null;
+			}
+		}
+
 		//TODO Handle error as error popup rather than crashing
-		public async Task<User> CreateUserAsync(User user)
+		/*public async Task<User> CreateUserAsync(User user)
 		{
 			try
 			{
@@ -46,10 +69,10 @@ namespace Indigo.Client.Core.Rest
 			{
 				throw;
 			}
-		}
+		}*/
 
 		//TODO Handle error as error popup rather than crashing
-		public async Task EditUserAsync(User user)
+		/*public async Task EditUserAsync(User user)
 		{
 			try
 			{
@@ -59,10 +82,10 @@ namespace Indigo.Client.Core.Rest
 			{
 				throw;
 			}
-		}
+		}*/
 
 		//TODO Handle error as error popup rather than crashing
-		public async Task DeleteUserAsync(User user)
+		/*public async Task DeleteUserAsync(User user)
 		{
 			try
 			{
@@ -72,6 +95,54 @@ namespace Indigo.Client.Core.Rest
 			{
 
 				throw;
+			}
+		}*/
+
+		public async Task<Conversation> CreateConversationAsync(User authUser, Conversation conversation)
+		{
+			try
+			{
+				return await Api.CreateConversationAsync(authUser.Username, authUser.PasswordHash, conversation);
+			}
+			catch (ApiException e)
+			{
+				if (e.StatusCode == System.Net.HttpStatusCode.Forbidden)
+				{
+					//TODO Check for this and display to user
+					MessagingCenter.Send(this, "Forbidden");
+					return null;
+				}
+				throw;
+			}
+			catch (HttpRequestException)
+			{
+				//TODO Check for this and display to user
+				MessagingCenter.Send(this, "HttpRequestException");
+				return null;
+			}
+		}
+
+		public async Task<UserConversation> CreateUserConversationAsync(User authUser, User user, Conversation conversation)
+		{
+			try
+			{
+				return await Api.CreateUserConversationAsync(authUser.Username, authUser.PasswordHash, user.UserId, conversation.ConversationId);
+			}
+			catch (ApiException e)
+			{
+				if (e.StatusCode == System.Net.HttpStatusCode.Forbidden)
+				{
+					//TODO Check for this and display to user
+					MessagingCenter.Send(this, "Forbidden");
+					return null;
+				}
+				throw;
+			}
+			catch (HttpRequestException)
+			{
+				//TODO Check for this and display to user
+				MessagingCenter.Send(this, "HttpRequestException");
+				return null;
 			}
 		}
 

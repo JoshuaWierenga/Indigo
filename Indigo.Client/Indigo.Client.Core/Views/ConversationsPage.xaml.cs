@@ -18,7 +18,12 @@ namespace Indigo.Client.Core.Views
 			BindingContext = viewModel = new ConversationsViewModel(existingUser);
 		}
 
-		async void Item_Swiped(object sender, EventArgs e)
+		async void Create_Pressed(object sender, EventArgs e)
+		{
+			await Navigation.PushAsync(new ConversationPage(viewModel.User));
+		}
+
+		async void Delete_Pressed(object sender, EventArgs e)
 		{
 			MenuItem menuItem = (MenuItem)sender;
 			UserConversation selectedUserConversation = (UserConversation)menuItem.CommandParameter;
