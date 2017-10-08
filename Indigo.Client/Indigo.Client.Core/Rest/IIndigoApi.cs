@@ -9,18 +9,6 @@ namespace Indigo.Client.Core.Rest
 		[Get("/UsersApi")]
 		Task<User> GetUserAsync([Header("Username")] string Username, [Header("PasswordHash")] string PasswordHash);
 
-		[Get("/UsersApi/{publicusername}")]
-		Task<User> GetPublicUserAsync([Header("Username")] string Username, [Header("PasswordHash")] string PasswordHash, string publicusername);
-
-		//[Post("/UsersApi")]
-		//Task<User> CreateUserAsync([Body] User user);
-
-		//[Put("/UsersApi/{id}")]
-		//Task EditUserAsync(int id, [Body] User user);
-
-		//[Delete("/UsersApi/{id}")]
-		//Task DeleteUserAsync(int id);
-
 		[Put("/ConversationsApi")]
 		Task<Conversation> CreateConversationAsync([Header("Username")] string Username, [Header("PasswordHash")] string PasswordHash, Conversation conversation);
 
