@@ -28,7 +28,7 @@ namespace Indigo.Server.Controllers
 		/// <param name="conversation">Partial conversation object containing a name and a chat type</param>
 		/// <returns>Full conversation object including the database id</returns>
 		[HttpPost]
-		public async Task<IActionResult> PostConversation([FromHeader] string authUsername, [FromHeader] string authPasswordHash, [FromBody] Conversation conversation)
+		public async Task<IActionResult> PostConversationAsync([FromHeader] string authUsername, [FromHeader] string authPasswordHash, [FromBody] Conversation conversation)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -76,6 +76,49 @@ namespace Indigo.Server.Controllers
 				})
 			});
 
+		}
+
+		// DELETE: api/conversations/5
+		/// <summary>
+		/// Requires user auth
+		/// conversation id from the route and attempts to remove the conversation
+		/// </summary>
+		/// <param name="conversationid">id of conversation</param>
+		[HttpDelete("{conversationid}")]
+		public async Task<IActionResult> DeleteConversationAsync([FromHeader] string authUsername, [FromHeader] string authPasswordHash,
+			[FromRoute] int conversationid)
+		{
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
+
+			var foundAuthUser = await _context.Users
+				.Include(u => u.UserConversations)
+					.ThenInclude(uc => uc.Conversation)
+				.SingleOrDefaultAsync(u => u.Username == authUsername && u.PasswordHash == authPasswordHash);
+
+			if (foundAuthUser == null)
+			{
+				return StatusCode(403);
+			}
+
+			var foundUserConversation = foundAuthUser.UserConversations
+				.SingleOrDefault(c => c.ConversationId == conversationid);
+
+			if (foundUserConversation == null)
+			{
+				return NotFound();
+			}
+			else if (!foundUserConversation.isAdmin)
+			{
+				return StatusCode(403);
+			}
+
+			_context.Conversations.Remove(foundUserConversation.Conversation);
+			await _context.SaveChangesAsync();
+
+			return NoContent();
 		}
 
 		// POST: api/conversations/5/users
@@ -135,71 +178,6 @@ namespace Indigo.Server.Controllers
 				},
 				userConversation.isAdmin
 			});
-		}
-
-		// Post: api/conversations/5/users/5
-		//TODO handle group chats rather than just deleting private chats
-		//if removing user when users > 2 then just remove user
-		//if removing user when users = 2 the do nothing and make deleter remove group entirely
-		//TODO handle messages
-		/// <summary>
-		/// Requires user auth
-		/// Takes a user id and a conversation id from the route and attempts to remove the conversation
-		/// </summary>
-		/// <param name="userid">id of user</param>
-		/// <param name="conversationid">id of conversation</param>
-		/// <returns></returns>
-		[HttpDelete("{conversationid}/users/{userid}")]
-		public async Task<IActionResult> DeleteUserCollection([FromHeader] string authUsername, [FromHeader] string authPasswordHash, 
-			[FromRoute] int conversationid, [FromRoute] int userid)
-		{
-			if (!ModelState.IsValid)
-			{
-				return BadRequest(ModelState);
-			}
-
-			var foundAuthUser = await _context.Users
-				.SingleOrDefaultAsync(u => u.Username == authUsername && u.PasswordHash == authPasswordHash);
-
-			if (foundAuthUser == null)
-			{
-				return StatusCode(403);
-			}
-
-			var foundUser = await _context.Users
-				.SingleOrDefaultAsync(u => u.UserId == userid);
-
-			var foundUserConversation = await _context.UserConversations
-				.Include(uc => uc.Conversation)
-					.ThenInclude(c => c.UserConversations)
-				.SingleOrDefaultAsync(uc => uc.UserId == userid && uc.ConversationId == conversationid);
-
-			if (foundUser == null || foundUserConversation == null || foundUserConversation.Conversation.isGroupChat)
-			{
-				return NotFound();
-			}
-
-			if (foundAuthUser != foundUser)
-			{
-				var foundAuthUserConversation = await _context.UserConversations
-					.Include(uc => uc.User)
-					.SingleOrDefaultAsync(uc => uc.UserId == foundAuthUser.UserId && uc.ConversationId == conversationid);
-
-				if (foundAuthUserConversation == null)
-				{
-					return NotFound();
-				}
-
-				if (!foundAuthUserConversation.isAdmin)
-				{
-					return StatusCode(403);
-				}
-			}
-
-			_context.Conversations.Remove(foundUserConversation.Conversation);
-			await _context.SaveChangesAsync();
-
-			return NoContent();
 		}
     }
 }

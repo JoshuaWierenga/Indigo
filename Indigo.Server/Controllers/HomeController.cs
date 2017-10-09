@@ -56,5 +56,23 @@ namespace Indigo.Server.Controllers
 
 			return RedirectToAction("Index");
 		}
+
+		public async Task<IActionResult> DeleteConversation(int id)
+		{
+			int? currentUser = HttpContext.Session.GetInt32("CurrentUser");
+
+			if (currentUser.HasValue)
+			{
+				var conversation = await _context.Conversations
+					.Include(c => c.UserConversations)
+					.SingleOrDefaultAsync(c => c.ConversationId == id 
+					&& c.UserConversations.SingleOrDefault(uc => uc.UserId == currentUser) != null);
+
+				_context.Conversations.Remove(conversation);
+				await _context.SaveChangesAsync();			
+			}
+
+			return RedirectToAction("Index");
+		}
 	}
 }
