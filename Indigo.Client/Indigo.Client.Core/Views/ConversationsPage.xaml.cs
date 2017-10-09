@@ -20,7 +20,7 @@ namespace Indigo.Client.Core.Views
 
 		async void Create_Pressed(object sender, EventArgs e)
 		{
-			await Navigation.PushAsync(new ConversationPage(viewModel.User));
+			await Navigation.PushAsync(new ModifyConversationPage(viewModel.User));
 		}
 
 		async void Delete_Pressed(object sender, EventArgs e)

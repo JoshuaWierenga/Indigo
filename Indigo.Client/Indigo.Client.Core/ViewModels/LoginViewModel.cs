@@ -1,4 +1,7 @@
-﻿namespace Indigo.Client.Core.ViewModels
+﻿using System.Threading.Tasks;
+using Indigo.Core.Models;
+
+namespace Indigo.Client.Core.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
@@ -14,6 +17,16 @@
 		{
 			get => passwordHash;
 			set => SetProperty(ref passwordHash, value);
+		}
+
+		public async Task<User> GetUserAsync()
+		{
+			User partialNewUser = new User
+			{
+				Username = Username,
+				PasswordHash = Username
+			};
+			return  await Server.GetUserAsync(partialNewUser);
 		}
 	}
 }

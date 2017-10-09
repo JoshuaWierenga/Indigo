@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Indigo.Core.Models;
 using Indigo.Server.Context;
+using Indigo.Core.Models;
 
 namespace Indigo.Server.Controllers
 {
@@ -20,28 +20,35 @@ namespace Indigo.Server.Controllers
 
 		// GET: api/users
 		/// <summary>
-		/// Takes username and password and checks if they exist and are correct
-		/// and returns the full user object if they are
+		/// Requires user auth
+		/// takes a username and attempts to find a user with it
+		/// if the user is is auth user then their full user object is returned
+		/// otherwise just the userid and username is returned
 		/// </summary>
-		/// <param name="Username">Username to check</param>
-		/// <param name="PasswordHash">Password to check</param>
-		/// <returns>Complete user object with user info, user's userconversations and the conversations for those</returns>
-		[HttpGet]
-		public async Task<IActionResult> GetUser([FromHeader] string Username, [FromHeader] string PasswordHash)
+		/// <returns>
+		/// Partial user object with userid and username or
+		/// Complete user object with user info and user's conversations</returns>
+		[HttpGet("{username}")]
+		public async Task<IActionResult> GetUser([FromHeader] string authUsername, [FromHeader] string authPasswordHash, [FromRoute] string username)
 		{
 			if (!ModelState.IsValid)
 			{
 				return BadRequest(ModelState);
 			}
 
+			var foundAuthUser = await _context.Users
+				.SingleOrDefaultAsync(u => u.Username == authUsername && u.PasswordHash == authPasswordHash);
 
-			if (Username == null || Username == "" ||
-				PasswordHash == null || PasswordHash == "")
+			if (foundAuthUser == null)
 			{
-				return BadRequest();
+				return StatusCode(403);
 			}
+			
+			object foundUser;
 
-			var foundUser = await _context.Users
+			if (authUsername == username)
+			{
+				foundUser = await _context.Users
 				.Select(u => new
 				{
 					u.UserId,
@@ -55,7 +62,7 @@ namespace Indigo.Server.Controllers
 							uc.Conversation.ConversationName,
 							uc.Conversation.isGroupChat,
 							UserConversations = uc.Conversation.UserConversations
-								.Where(uccuc => uccuc.User.Username != Username)
+								.Where(uccuc => uccuc.User.Username != username)
 								.Select(uccuc => new
 								{
 									User = new
@@ -63,12 +70,21 @@ namespace Indigo.Server.Controllers
 										uccuc.User.Username
 									},
 									uccuc.isAdmin
-								}),
-							uc.isAdmin
-						}
+								})
+						},
+						uc.isAdmin
 					})
-				})
-				.SingleOrDefaultAsync(u => u.Username == Username && u.PasswordHash == PasswordHash);
+				}).SingleOrDefaultAsync(u => u.Username == username);
+			}
+			else
+			{
+				foundUser = await _context.Users
+				.Select(u => new
+				{
+					UserId = u.UserId,
+					Username = u.Username,
+				}).SingleOrDefaultAsync(u => u.Username == username);
+			}
 
 			if (foundUser == null)
 			{

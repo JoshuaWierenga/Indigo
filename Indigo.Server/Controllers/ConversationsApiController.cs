@@ -28,7 +28,7 @@ namespace Indigo.Server.Controllers
 		/// <param name="conversation">Partial conversation object containing a name and a chat type</param>
 		/// <returns>Full conversation object including the database id</returns>
 		[HttpPost]
-		public async Task<IActionResult> PostConversation([FromHeader] string Username, [FromHeader] string PasswordHash, [FromBody] Conversation conversation)
+		public async Task<IActionResult> PostConversation([FromHeader] string authUsername, [FromHeader] string authPasswordHash, [FromBody] Conversation conversation)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -36,7 +36,7 @@ namespace Indigo.Server.Controllers
 			}
 
 			var foundAuthUser = await _context.Users
-				.SingleOrDefaultAsync(u => u.Username == Username && u.PasswordHash == PasswordHash);
+				.SingleOrDefaultAsync(u => u.Username == authUsername && u.PasswordHash == authPasswordHash);
 
 			if (foundAuthUser == null)
 			{
@@ -89,7 +89,7 @@ namespace Indigo.Server.Controllers
 		/// <param name="conversationid">id of conversation</param>
 		/// <returns>Userconversation object containing conversation id and name, user id and name and user permission level</returns>
 		[HttpPost("{conversationid}/users")]
-		public async Task<IActionResult> PostUserConversationAsync([FromHeader] string Username, [FromHeader] string PasswordHash,
+		public async Task<IActionResult> PostUserConversationAsync([FromHeader] string authUsername, [FromHeader] string authPasswordHash,
 			[FromRoute] int conversationid, [FromBody] UserConversation userConversation)
 		{
 			if (!ModelState.IsValid)
@@ -98,7 +98,7 @@ namespace Indigo.Server.Controllers
 			}
 
 			var foundAuthUser = await _context.Users
-				.SingleOrDefaultAsync(u => u.Username == Username && u.PasswordHash == PasswordHash);
+				.SingleOrDefaultAsync(u => u.Username == authUsername && u.PasswordHash == authPasswordHash);
 
 			if (foundAuthUser == null)
 			{
@@ -150,8 +150,8 @@ namespace Indigo.Server.Controllers
 		/// <param name="conversationid">id of conversation</param>
 		/// <returns></returns>
 		[HttpDelete("{conversationid}/users/{userid}")]
-		public async Task<IActionResult> DeleteUserCollection([FromHeader] string Username, [FromHeader] string PasswordHash,
-			[FromRoute] int userid, [FromRoute] int conversationid)
+		public async Task<IActionResult> DeleteUserCollection([FromHeader] string authUsername, [FromHeader] string authPasswordHash, 
+			[FromRoute] int conversationid, [FromRoute] int userid)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -159,7 +159,7 @@ namespace Indigo.Server.Controllers
 			}
 
 			var foundAuthUser = await _context.Users
-				.SingleOrDefaultAsync(u => u.Username == Username && u.PasswordHash == PasswordHash);
+				.SingleOrDefaultAsync(u => u.Username == authUsername && u.PasswordHash == authPasswordHash);
 
 			if (foundAuthUser == null)
 			{

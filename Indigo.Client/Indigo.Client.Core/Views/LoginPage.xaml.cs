@@ -21,7 +21,8 @@ namespace Indigo.Client.Core.Views
 		async void Login_Clicked(object sender, EventArgs e)
 		{
 			((Button)sender).IsEnabled = false;
-			User newUser = await viewModel.Server.GetUserAsync(viewModel.Username, viewModel.PasswordHash);
+
+			User newUser = await viewModel.GetUserAsync();
 
 			if(newUser != null)
 			{

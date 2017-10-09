@@ -8,13 +8,18 @@ namespace Indigo.Client.Core.Rest
 {
 	public class ServerAccess
 	{
-		IIndigoApi Api = RestService.For<IIndigoApi>("http://192.168.42.242/api");
+		IIndigoApi Api = RestService.For<IIndigoApi>("http://192.168.0.2/api");
 
-		public async Task<User> GetUserAsync(string username, string passwordHash)
+		public async Task<User> GetUserAsync(User authUser, string username = null)
 		{
 			try
 			{
-				return await Api.GetUserAsync(username, passwordHash);
+				if (username == null)
+				{
+					username = authUser.Username;
+				}
+
+				return await Api.GetUserAsync(authUser.Username, authUser.PasswordHash, username);
 			}
 			catch (ApiException e)
 			{
@@ -38,7 +43,7 @@ namespace Indigo.Client.Core.Rest
 		{
 			try
 			{
-				return await Api.CreateConversationAsync(authUser.Username, authUser.PasswordHash, conversation);
+				return await Api.PostConversationAsync(authUser.Username, authUser.PasswordHash, conversation);
 			}
 			catch (ApiException e)
 			{
@@ -58,11 +63,18 @@ namespace Indigo.Client.Core.Rest
 			}
 		}
 
-		public async Task<UserConversation> CreateUserConversationAsync(User authUser, User user, Conversation conversation)
+		public async Task<UserConversation> CreateUserConversationAsync(User authUser, Conversation conversation, User newUser, bool admin)
 		{
 			try
 			{
-				return await Api.CreateUserConversationAsync(authUser.Username, authUser.PasswordHash, user.UserId, conversation.ConversationId);
+				UserConversation newUserConversation = new UserConversation
+				{
+					ConversationId = conversation.ConversationId,
+					UserId = newUser.UserId,
+					isAdmin = admin
+				};
+
+				return await Api.PostUserConversationAsync(authUser.Username, authUser.PasswordHash, conversation.ConversationId, newUserConversation);
 			}
 			catch (ApiException e)
 			{
@@ -86,7 +98,7 @@ namespace Indigo.Client.Core.Rest
 		{
 			try
 			{
-				await Api.DeleteUserConversationAsync(user.Username, user.PasswordHash, user.UserId, conversation.ConversationId);
+				await Api.DeleteUserConversationAsync(user.Username, user.PasswordHash, conversation.ConversationId, user.UserId);
 			}
 			catch (ApiException e)
 			{

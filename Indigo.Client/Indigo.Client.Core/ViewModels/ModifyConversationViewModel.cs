@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Indigo.Client.Core.ViewModels
 {
-    class ConversationViewModel : ConversationsViewModel
+    class ModifyConversationViewModel : ConversationsViewModel
     {
 		Conversation _conversation;
 		public Conversation Conversation
@@ -41,22 +41,26 @@ namespace Indigo.Client.Core.ViewModels
 			set => SetProperty(ref _newConversation, value);
 		}
 
-		public ConversationViewModel(User existingUser, Conversation existingConversation = null) : base(existingUser)
+		public ModifyConversationViewModel(User existingUser, Conversation existingConversation = null) : base(existingUser)
 		{
 			NewConversation = existingConversation == null;
-			Conversation =  NewConversation ? existingConversation : new Conversation();
+			Conversation =  NewConversation ? new Conversation() : existingConversation;
 		}
 
 		//TODO handle editing existing conversation
-		public async Task SaveConversation(User ConversationPartner)
+		//TODO handle group chats
+		public async Task SaveConversation()
 		{
 			if (NewConversation)
 			{
 				Conversation newConversation = await Server.CreateConversationAsync(User, Conversation);
-
-				await Server.CreateUserConversationAsync(User, User, Conversation);
-				await Server.CreateUserConversationAsync(User, ConversationPartner, Conversation);
+				await Server.CreateUserConversationAsync(User, newConversation, await GetPartner(), true);
 			}
+		}
+
+		async Task<User> GetPartner()
+		{
+			return await Server.GetUserAsync(User, PartnerUsername);
 		}
 	}
 }

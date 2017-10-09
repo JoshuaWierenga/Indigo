@@ -20,7 +20,7 @@ namespace Indigo.Client.Core.ViewModels
 		public async Task DeleteUserConversationAsync(Conversation conversation)
 		{
 			await Server.DeleteUserConversationAsync(User, conversation);
-			User = await Server.GetUserAsync(User.Username, User.PasswordHash);
+			User = await Server.GetUserAsync(User);
 		}
 	}
 }
