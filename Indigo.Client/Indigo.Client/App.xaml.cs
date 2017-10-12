@@ -1,9 +1,9 @@
-﻿using Indigo.Client.Views;
+﻿using Indigo.Client.Core.Views;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace Indigo.Client
+namespace Indigo.Client.Core
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class App : Application

@@ -2,7 +2,7 @@
 using System.Globalization;
 using Xamarin.Forms;
 
-namespace Indigo.Client.Helpers
+namespace Indigo.Client.Core.Helpers
 {
 	public class PartnerListViewHeightCalculator : IValueConverter
 	{

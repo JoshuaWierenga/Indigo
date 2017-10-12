@@ -1,7 +1,7 @@
 ﻿using Indigo.Core.Models;
 using System.Threading.Tasks;
 
-namespace Indigo.Client.ViewModels
+namespace Indigo.Client.Core.ViewModels
 {
     public class ConversationsViewModel : BaseViewModel
     {

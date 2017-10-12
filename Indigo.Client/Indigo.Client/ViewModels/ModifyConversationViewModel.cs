@@ -3,7 +3,7 @@ using MvvmHelpers;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Indigo.Client.ViewModels
+namespace Indigo.Client.Core.ViewModels
 {
 	class ModifyConversationViewModel : ConversationsViewModel
 	{

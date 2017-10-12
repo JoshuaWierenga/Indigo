@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace Indigo.Client.Rest
+namespace Indigo.Client.Core.Rest
 {
 	public class ServerAccess
 	{

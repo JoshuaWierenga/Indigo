@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:Helpers="clr-namespace:Indigo.Client.Helpers"
-             x:Class="Indigo.Client.Views.ModifyConversationPage">
+             xmlns:Helpers="clr-namespace:Indigo.Client.Core.Helpers"
+             x:Class="Indigo.Client.Core.Views.ModifyConversationPage">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="{Binding SaveText}" Clicked="Save_ClickedAsync"/>
     </ContentPage.ToolbarItems>
