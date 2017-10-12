@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="6b943c69-3798-4478-9a58-591aab0c3651" Publisher="CN=Joshua Wierenga" Version="1.0.0.0" />
-  <mp:PhoneIdentity PhoneProductId="6b943c69-3798-4478-9a58-591aab0c3651" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Identity Name="96457eb0-332e-41bc-86d2-f7ad3fc85019" Publisher="CN=Joshua Wierenga" Version="1.0.0.0" />
+  <mp:PhoneIdentity PhoneProductId="96457eb0-332e-41bc-86d2-f7ad3fc85019" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Indigo</DisplayName>
     <PublisherDisplayName>Joshua Wierenga</PublisherDisplayName>
@@ -27,5 +27,6 @@
   </Applications>
   <Capabilities>
     <Capability Name="internetClient" />
+    <Capability Name="privateNetworkClientServer" />
   </Capabilities>
 </Package>

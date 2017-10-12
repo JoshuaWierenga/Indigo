@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Indigo.Client.Core.Views.ModifyConversationPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="{Binding SaveText}" Clicked="Save_Clicked"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Conversation Name" FontSize="Medium" />
+                <Label Text="{Binding ConversationNameExtraText}" FontSize="Medium" TextColor="Red"/>
+            </StackLayout>
+            <Entry Text="{Binding Conversation.ConversationName, Mode=TwoWay}" FontSize="Small" />
+            <Label Text="Group Chat?" FontSize="Medium" />
+            <Switch IsToggled="{Binding Conversation.isGroupChat, Mode=TwoWay}" IsEnabled="False" />
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Conversation Partner" FontSize="Medium" />
+                <Label Text="{Binding ConversationPartnerExtraText}" FontSize="Medium" TextColor="Red"/>
+            </StackLayout>
+            <Entry Text="{Binding PartnerUsername, Mode=TwoWay}" IsEnabled="{Binding NewConversation}" FontSize="Small" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

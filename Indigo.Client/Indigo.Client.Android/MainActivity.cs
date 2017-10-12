@@ -2,9 +2,9 @@
 using Android.Content.PM;
 using Android.OS;
 
-namespace Indigo.Client.Android
+namespace Indigo.Client.Droid
 {
-	[Activity(Label = "Indigo", Icon = "@drawable/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+	[Activity(Label = "Indigo.Client", Icon = "@drawable/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
 	public class MainActivity : Xamarin.Forms.Platform.Android.FormsAppCompatActivity
 	{
 		protected override void OnCreate(Bundle bundle)
@@ -15,7 +15,7 @@ namespace Indigo.Client.Android
 			base.OnCreate(bundle);
 
 			Xamarin.Forms.Forms.Init(this, bundle);
-			LoadApplication(new App());
+			LoadApplication(new Core.App());
 		}
 	}
 }

@@ -19,7 +19,7 @@ namespace Indigo.Client.iOS
 		public override bool FinishedLaunching(UIApplication app, NSDictionary options)
 		{
 			Xamarin.Forms.Forms.Init();
-			LoadApplication(new App());
+			LoadApplication(new Core.App());
 
 			return base.FinishedLaunching(app, options);
 		}
