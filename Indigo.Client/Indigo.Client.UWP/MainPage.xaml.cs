@@ -6,7 +6,7 @@
 		{
 			InitializeComponent();
 
-			LoadApplication(new Core.App());
+			LoadApplication(new Client.App());
 		}
 	}
 }
