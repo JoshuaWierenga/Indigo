@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Indigo.Core.Models;
 
-namespace Indigo.Client.Core.ViewModels
+namespace Indigo.Client.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {

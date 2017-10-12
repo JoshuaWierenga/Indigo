@@ -1,10 +1,10 @@
-﻿using Indigo.Client.Core.ViewModels;
+﻿using Indigo.Client.ViewModels;
 using Indigo.Core.Models;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace Indigo.Client.Core.Views
+namespace Indigo.Client.Views
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class LoginPage : ContentPage

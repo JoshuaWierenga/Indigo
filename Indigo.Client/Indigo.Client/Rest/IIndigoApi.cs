@@ -2,7 +2,7 @@
 using Refit;
 using System.Threading.Tasks;
 
-namespace Indigo.Client.Core.Rest
+namespace Indigo.Client.Rest
 {
     public interface IIndigoApi
     {

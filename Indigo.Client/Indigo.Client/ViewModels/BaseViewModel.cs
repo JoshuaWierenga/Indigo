@@ -1,7 +1,7 @@
-﻿using Indigo.Client.Core.Rest;
+﻿using Indigo.Client.Rest;
 using MvvmHelpers;
 
-namespace Indigo.Client.Core.ViewModels
+namespace Indigo.Client.ViewModels
 {
     public class BaseViewModel : ObservableObject
 	{
