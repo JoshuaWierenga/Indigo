@@ -19,63 +19,6 @@ namespace Indigo.Server.Controllers
 			_context = context;
 		}
 
-		// PUT: api/conversations/5
-		[HttpPut("{conversationid}")]
-		public async Task<IActionResult> PutConversationAsync([FromHeader] string authUsername, [FromHeader] string authPasswordHash,
-			[FromRoute] int conversationid, [FromBody] Conversation conversation)
-		{
-			if (!ModelState.IsValid)
-			{
-				return BadRequest(ModelState);
-			}
-
-			var foundAuthUser = await _context.Users
-				.Include(u => u.UserConversations)
-				.SingleOrDefaultAsync(u => u.Username == authUsername && u.PasswordHash == authPasswordHash);
-
-			if (foundAuthUser == null)
-			{
-				return StatusCode(403);
-			}
-
-			if (conversationid != conversation.ConversationId)
-			{
-				return BadRequest();
-			}
-
-			var foundUserConversation = foundAuthUser.UserConversations
-				.SingleOrDefault(c => c.ConversationId == conversationid);
-
-			if (foundUserConversation == null)
-			{
-				return NotFound();
-			}
-			else if (!foundUserConversation.isAdmin)
-			{
-				return StatusCode(403);
-			}
-
-			_context.Entry(conversation).State = EntityState.Modified;
-
-			try
-			{
-				await _context.SaveChangesAsync();
-			}
-			catch (DbUpdateConcurrencyException)
-			{
-				if (!_context.Conversations.Any(e => e.ConversationId == conversationid))
-				{
-					return NotFound();
-				}
-				else
-				{
-					throw;
-				}
-			}
-
-			return NoContent();
-		}
-
 		// POST: api/conversations
 		/// <summary>
 		/// Requires user auth
@@ -138,7 +81,7 @@ namespace Indigo.Server.Controllers
 		// DELETE: api/conversations/5
 		/// <summary>
 		/// Requires user auth
-		/// Takes a conversation id from the route and attempts to remove the conversation
+		/// conversation id from the route and attempts to remove the conversation
 		/// </summary>
 		/// <param name="conversationid">id of conversation</param>
 		[HttpDelete("{conversationid}")]
@@ -161,7 +104,7 @@ namespace Indigo.Server.Controllers
 			}
 
 			var foundUserConversation = foundAuthUser.UserConversations
-				.SingleOrDefault(uc => uc.ConversationId == conversationid);
+				.SingleOrDefault(c => c.ConversationId == conversationid);
 
 			if (foundUserConversation == null)
 			{
@@ -235,59 +178,6 @@ namespace Indigo.Server.Controllers
 				},
 				userConversation.isAdmin
 			});
-		}
-
-		// POST: api/conversations/5/users/5
-		/// <summary>
-		/// Requires user auth
-		/// Takes a conversation id and a user id from the route and attempts to remove the user from the conversation
-		/// </summary>
-		/// <param name="conversationid">id of conversation</param>
-		/// <param name="userid">id of user</param>
-		[HttpDelete("{conversationid}/users/{userid}")]
-		public async Task<IActionResult> DeleteUserConversationAsync([FromHeader] string authUsername, [FromHeader] string authPasswordHash,
-			[FromRoute] int conversationid, [FromRoute] int userid)
-		{
-			if (!ModelState.IsValid)
-			{
-				return BadRequest(ModelState);
-			}
-
-			var foundAuthUser = await _context.Users
-				.Include(u => u.UserConversations)
-					.ThenInclude(uc => uc.Conversation)
-						.ThenInclude(c => c.UserConversations)
-				.SingleOrDefaultAsync(u => u.Username == authUsername && u.PasswordHash == authPasswordHash);
-
-			if (foundAuthUser == null)
-			{
-				return StatusCode(403);
-			}
-
-			var foundAuthUserConversation = foundAuthUser.UserConversations
-				.SingleOrDefault(uc => uc.ConversationId == conversationid);
-
-			if (foundAuthUserConversation == null)
-			{
-				return NotFound();
-			}
-			else if (!foundAuthUserConversation.isAdmin)
-			{
-				return StatusCode(403);
-			}
-
-			var foundUserConversation = foundAuthUserConversation.Conversation.UserConversations
-				.SingleOrDefault(uc => uc.UserId == userid);
-
-			if (foundUserConversation == null)
-			{
-				return NotFound();
-			}
-
-			_context.UserConversations.Remove(foundUserConversation);
-			await _context.SaveChangesAsync();
-
-			return NoContent();
 		}
     }
 }
