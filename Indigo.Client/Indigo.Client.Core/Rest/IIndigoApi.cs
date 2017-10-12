@@ -10,6 +10,10 @@ namespace Indigo.Client.Core.Rest
 		Task<User> GetUserAsync([Header("authUsername")] string authUsername, [Header("authPasswordHash")] string authPasswordHash,
 			string username);
 
+		[Put("/conversations/{conversationid}")]
+		Task PutConversationAsync([Header("authUsername")] string authUsername, [Header("authPasswordHash")] string authPasswordHash,
+			int conversationid, [Body] Conversation conversation);
+
 		[Post("/conversations")]
 		Task<Conversation> PostConversationAsync([Header("authUsername")] string authUsername, [Header("authPasswordHash")] string authPasswordHash, 
 			[Body] Conversation conversation);

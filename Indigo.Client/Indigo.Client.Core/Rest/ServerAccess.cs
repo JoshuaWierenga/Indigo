@@ -39,6 +39,32 @@ namespace Indigo.Client.Core.Rest
 			}
 		}
 
+		public async Task PutConversationAsync(User authUser, Conversation conversation)
+		{
+			try
+			{
+				await Api.PutConversationAsync(authUser.Username, authUser.PasswordHash, conversation.ConversationId, conversation);
+			}
+			catch (ApiException e)
+			{
+				if (e.StatusCode == System.Net.HttpStatusCode.Forbidden)
+				{
+					//TODO Check for this and display to user
+					MessagingCenter.Send(this, "Forbidden");
+				}
+				else
+				{
+					throw;
+				}
+				
+			}
+			catch (HttpRequestException)
+			{
+				//TODO Check for this and display to user
+				MessagingCenter.Send(this, "HttpRequestException");
+			}
+		}
+
 		public async Task<Conversation> CreateConversationAsync(User authUser, Conversation conversation)
 		{
 			try

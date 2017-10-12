@@ -1,24 +1,60 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Helpers="clr-namespace:Indigo.Client.Core.Helpers"
              x:Class="Indigo.Client.Core.Views.ModifyConversationPage">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="{Binding SaveText}" Clicked="Save_Clicked"/>
+        <ToolbarItem Text="{Binding SaveText}" Clicked="Save_ClickedAsync"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout>
-            <StackLayout Orientation="Horizontal">
-                <Label Text="Conversation Name" FontSize="Medium" />
-                <Label Text="{Binding ConversationNameExtraText}" FontSize="Medium" TextColor="Red"/>
-            </StackLayout>
-            <Entry Text="{Binding Conversation.ConversationName, Mode=TwoWay}" FontSize="Small" />
-            <Label Text="Group Chat?" FontSize="Medium" />
-            <Switch IsToggled="{Binding Conversation.isGroupChat, Mode=TwoWay}" IsEnabled="False" />
-            <StackLayout Orientation="Horizontal">
-                <Label Text="Conversation Partner" FontSize="Medium" />
-                <Label Text="{Binding ConversationPartnerExtraText}" FontSize="Medium" TextColor="Red"/>
-            </StackLayout>
-            <Entry Text="{Binding PartnerUsername, Mode=TwoWay}" IsEnabled="{Binding NewConversation}" FontSize="Small" />
-        </StackLayout>
+        <TableView Intent="Form" HasUnevenRows="True">
+            <TableRoot>
+                <TableSection>
+                    <EntryCell Label="Conversation Name" Text="{Binding Conversation.ConversationName, Mode=TwoWay}" Placeholder="Can not be empty"/>
+                    <SwitchCell Text="Group Chat" OnChanged="ChatType_ChangedAsync" On="{Binding Conversation.isGroupChat, Mode=TwoWay}"/>
+                    <ViewCell>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Conversation Partners" VerticalTextAlignment="Center"/>
+                            <Button Text="New User" Pressed="AddPartner_Pressed" VerticalOptions="Center" HorizontalOptions="EndAndExpand"/>
+                        </StackLayout>
+                    </ViewCell>
+                    <ViewCell>
+                        <StackLayout>
+                            <ListView ItemsSource="{Binding Partners, Mode=TwoWay}"
+                                CachingStrategy="RecycleElement"
+                                ItemSelected="Partner_Selected"
+                                HasUnevenRows="True"
+                                SeparatorVisibility="None">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <StackLayout Padding="0,1,0,0" BackgroundColor="Black">
+                                                <StackLayout>
+                                                    <StackLayout.BackgroundColor>
+                                                        <OnPlatform x:TypeArguments="Color" 
+                                                                Android="LightGray"
+                                                                WinPhone="White"/>
+                                                    </StackLayout.BackgroundColor>
+                                                    <StackLayout Orientation="Horizontal">
+                                                        <Label Text="Name" VerticalTextAlignment="Center"/>
+                                                        <Button Text="Delete" VerticalOptions="Center" HorizontalOptions="EndAndExpand"/>
+                                                    </StackLayout>
+                                                    <Entry Text="{Binding User.Username, Mode=TwoWay}" Placeholder="Can not be empty" HorizontalOptions="FillAndExpand"/>
+                                                    <StackLayout Orientation="Horizontal">
+                                                        <Label Text="Admin" VerticalTextAlignment="Center" VerticalOptions="Center"/>
+                                                        <Switch IsToggled="{Binding isAdmin}" VerticalOptions="Center" HorizontalOptions="EndAndExpand"/>
+                                                    </StackLayout>
+                                                </StackLayout>
+
+                                            </StackLayout>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </StackLayout>
+                    </ViewCell>
+                </TableSection>
+            </TableRoot>
+        </TableView>
     </ContentPage.Content>
 </ContentPage>

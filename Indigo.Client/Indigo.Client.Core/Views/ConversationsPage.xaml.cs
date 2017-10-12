@@ -11,9 +11,9 @@ namespace Indigo.Client.Core.Views
     {
 		ConversationsViewModel viewModel;
 
-        public ConversationsPage(User existingUser)
-        {
-            InitializeComponent();
+		public ConversationsPage(User existingUser)
+		{
+			InitializeComponent();
 
 			BindingContext = viewModel = new ConversationsViewModel(existingUser);
 		}
@@ -23,12 +23,18 @@ namespace Indigo.Client.Core.Views
 			await Navigation.PushAsync(new ModifyConversationPage(viewModel.User));
 		}
 
-		async void Delete_Pressed(object sender, EventArgs e)
+		async void Conversation_Pressed(object sender, ItemTappedEventArgs e)
+		{
+			await Navigation.PushAsync(new ModifyConversationPage(viewModel.User, ((UserConversation)e.Item).Conversation));
+		}
+
+		//TODO move to either ConversationPage or ViewConversationPage when they are created
+		/*async void Delete_Pressed(object sender, EventArgs e)
 		{
 			MenuItem menuItem = (MenuItem)sender;
 			UserConversation selectedUserConversation = (UserConversation)menuItem.CommandParameter;
 
 			await viewModel.DeleteUserConversationAsync(selectedUserConversation.Conversation);
-		}
+		}*/
 	}
 }

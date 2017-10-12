@@ -11,13 +11,11 @@
             <Label Text="Conversations" FontSize="Large" HorizontalOptions="Center"/>
             <ListView ItemsSource="{Binding User.UserConversations}"
             HasUnevenRows="True"
-            CachingStrategy="RecycleElement">
+            CachingStrategy="RecycleElement"
+            ItemTapped="Conversation_Pressed">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <ViewCell.ContextActions>
-                                <MenuItem Clicked="Delete_Pressed" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True"/>
-                            </ViewCell.ContextActions>
                             <StackLayout>
                                 <Label Text="{Binding Conversation.ConversationName}" FontSize="25"/>
                                 <StackLayout Orientation="Horizontal">
@@ -30,22 +28,6 @@
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
-
-                <!--Custom View Cells-->
-                <!--
-    <ListView.ItemTemplate>
-      <DataTemplate>
-        <ViewCell>
-          <StackLayout>
-            <Label Text="{Binding Text}" 
-                   Style="{DynamicResource ListItemTextStyle}" />
-            <Label Text="{Binding Detail}" 
-                   Style="{DynamicResource ListItemDetailTextStyle}"/>
-          </StackLayout>
-        </ViewCell>
-      </DataTemplate>
-    </ListView.ItemTemplate>
-    -->
             </ListView>
         </StackLayout>
     </ContentPage.Content>

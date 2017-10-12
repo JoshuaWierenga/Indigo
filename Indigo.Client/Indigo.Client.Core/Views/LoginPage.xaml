@@ -14,7 +14,7 @@
                 </Grid.ColumnDefinitions>
                 <Label Grid.Row="0" Grid.Column="2" Text="Login" FontSize="Large" VerticalOptions="Center" HorizontalOptions="Center"/>
                 <Entry Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding User.Username, Mode=OneWayToSource}" Placeholder="Username" />
-                <Entry Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding User.PasswordHash, Mode=OneWayToSource}" Placeholder="Password" />
+                <Entry Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" IsPassword="True" Text="{Binding User.PasswordHash, Mode=OneWayToSource}" Placeholder="Password" />
                 <Button Grid.Row="3" Grid.Column="2" Text="Login" Pressed="Login_Clicked" HorizontalOptions="Fill"/>
             </Grid>
         </StackLayout>
