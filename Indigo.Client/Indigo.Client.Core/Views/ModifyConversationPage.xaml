@@ -7,54 +7,40 @@
         <ToolbarItem Text="{Binding SaveText}" Clicked="Save_ClickedAsync"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <TableView Intent="Form" HasUnevenRows="True">
-            <TableRoot>
-                <TableSection>
-                    <EntryCell Label="Conversation Name" Text="{Binding Conversation.ConversationName, Mode=TwoWay}" Placeholder="Can not be empty"/>
-                    <SwitchCell Text="Group Chat" OnChanged="ChatType_ChangedAsync" On="{Binding Conversation.isGroupChat, Mode=TwoWay}"/>
-                    <ViewCell>
-                        <StackLayout Orientation="Horizontal">
-                            <Label Text="Conversation Partners" VerticalTextAlignment="Center"/>
-                            <Button Text="New User" Pressed="AddPartner_Pressed" VerticalOptions="Center" HorizontalOptions="EndAndExpand"/>
-                        </StackLayout>
-                    </ViewCell>
-                    <ViewCell>
-                        <StackLayout>
-                            <ListView ItemsSource="{Binding Partners, Mode=TwoWay}"
+        <StackLayout>
+            <Label Text="Conversation Name" VerticalTextAlignment="Center"/>
+            <Entry Text="{Binding Conversation.ConversationName, Mode=TwoWay}" HorizontalOptions="FillAndExpand"/>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Group Chat" VerticalTextAlignment="Center"/>
+                <Switch Toggled="ChatType_ChangedAsync" IsToggled="{Binding Conversation.isGroupChat, Mode=TwoWay}" HorizontalOptions="EndAndExpand"/>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Conversation Partners"  VerticalTextAlignment="Center"/>
+                <Button Text="New User" Pressed="AddPartner_Pressed" HorizontalOptions="EndAndExpand"/>
+            </StackLayout>
+            <ListView ItemsSource="{Binding Partners, Mode=TwoWay}"
                                 CachingStrategy="RecycleElement"
                                 ItemSelected="Partner_Selected"
-                                HasUnevenRows="True"
-                                SeparatorVisibility="None">
-                                <ListView.ItemTemplate>
-                                    <DataTemplate>
-                                        <ViewCell>
-                                            <StackLayout Padding="0,1,0,0" BackgroundColor="Black">
-                                                <StackLayout>
-                                                    <StackLayout.BackgroundColor>
-                                                        <OnPlatform x:TypeArguments="Color" 
-                                                                Android="LightGray"
-                                                                WinPhone="White"/>
-                                                    </StackLayout.BackgroundColor>
-                                                    <StackLayout Orientation="Horizontal">
-                                                        <Label Text="Name" VerticalTextAlignment="Center"/>
-                                                        <Button Text="Delete" VerticalOptions="Center" HorizontalOptions="EndAndExpand"/>
-                                                    </StackLayout>
-                                                    <Entry Text="{Binding User.Username, Mode=TwoWay}" Placeholder="Can not be empty" HorizontalOptions="FillAndExpand"/>
-                                                    <StackLayout Orientation="Horizontal">
-                                                        <Label Text="Admin" VerticalTextAlignment="Center" VerticalOptions="Center"/>
-                                                        <Switch IsToggled="{Binding isAdmin}" VerticalOptions="Center" HorizontalOptions="EndAndExpand"/>
-                                                    </StackLayout>
-                                                </StackLayout>
-
-                                            </StackLayout>
-                                        </ViewCell>
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
-                            </ListView>
-                        </StackLayout>
-                    </ViewCell>
-                </TableSection>
-            </TableRoot>
-        </TableView>
+                                SeparatorVisibility="None"
+                                HasUnevenRows="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="Name" VerticalTextAlignment="Center"/>
+                                    <Button Text="Delete" VerticalOptions="Center" HorizontalOptions="EndAndExpand"/>
+                                </StackLayout>
+                                <Entry Text="{Binding User.Username, Mode=TwoWay}" Placeholder="Can not be empty" HorizontalOptions="FillAndExpand"/>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="Admin" VerticalTextAlignment="Center" VerticalOptions="Center"/>
+                                    <Switch IsToggled="{Binding isAdmin}" VerticalOptions="Center" HorizontalOptions="EndAndExpand"/>
+                                </StackLayout>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>
