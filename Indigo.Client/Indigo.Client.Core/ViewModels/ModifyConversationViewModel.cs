@@ -5,103 +5,137 @@ using System.Threading.Tasks;
 
 namespace Indigo.Client.Core.ViewModels
 {
-	class ModifyConversationViewModel : ConversationsViewModel
-	{
-		Conversation _conversation;
-		public Conversation Conversation
-		{
-			get => _conversation;
-			set => SetProperty(ref _conversation, value);
-		}
+    class ModifyConversationViewModel : ConversationsViewModel
+    {
+        Conversation _conversation;
+        public Conversation Conversation
+        {
+            get => _conversation;
+            set => SetProperty(ref _conversation, value);
+        }
 
-		ObservableRangeCollection<UserConversation> _partners;
-		public ObservableRangeCollection<UserConversation> Partners
-		{
-			get => _partners;
-			set => SetProperty(ref _partners, value);
-		}
+        ObservableRangeCollection<UserConversation> _partners;
+        public ObservableRangeCollection<UserConversation> Partners
+        {
+            get => _partners;
+            set => SetProperty(ref _partners, value);
+        }
 
-		bool _newConversation;
-		public bool NewConversation
-		{
-			get => _newConversation;
-			set => SetProperty(ref _newConversation, value);
-		}
+        bool _newConversation;
+        public bool NewConversation
+        {
+            get => _newConversation;
+            set => SetProperty(ref _newConversation, value);
+        }
 
-		public ModifyConversationViewModel(User existingUser, Conversation existingConversation = null) : base(existingUser)
-		{
-			NewConversation = existingConversation == null;
-			Conversation = NewConversation ? new Conversation() : existingConversation;
+        bool _chatType;
+        public bool ChatType
+        {
+            get => _chatType;
+            set => SetProperty(ref _chatType, value);
+        }
 
-			Partners = new ObservableRangeCollection<UserConversation>();
+        string _saveText;
+        public string SaveText
+        {
+            get => _saveText;
+            set => SetProperty(ref _saveText, value);
+        }
 
-			if (NewConversation)
-			{
-				Partners.Add(new UserConversation
-				{
-					isAdmin = true
-				});
-			}
-			else
-			{
-				Partners.AddRange(Conversation.UserConversations);
-			}
-		}
+        public ModifyConversationViewModel(User existingUser, Conversation existingConversation = null) : base(existingUser)
+        {
+            NewConversation = existingConversation == null;
+            Conversation = NewConversation ? new Conversation() : existingConversation;
 
-		//TODO handle group chats
-		public async Task SaveConversation()
-		{
-			if (NewConversation)
-			{
-				Conversation = await Server.CreateConversationAsync(User, Conversation);
-			}
-			else
-			{
-				await Server.PutConversationAsync(User, Conversation);
-			}
+            Partners = new ObservableRangeCollection<UserConversation>();
 
-			if (Conversation.UserConversations.Count() == 0)
-			{
-				//TODO tell user to enter usernames 
-				return;
-			}
-			else if (!Conversation.isGroupChat && Conversation.UserConversations.Count > 2)
-			{
-				//TOOD tell user that only one username can be entered for private chats
-				return;
-			}
+            if (NewConversation)
+            {
+                AddPartner();
+            }
+            else
+            {
+                Partners.AddRange(Conversation.UserConversations);
+                ChatType = Conversation.isGroupChat;
+            }
+        }
 
-			/*for (int i = 0; i < partners.Length; i++)
-			{
-				//TODO handle group chats
-				bool userLevel = true;
+        public async Task SaveConversation()
+        {
+            if (NewConversation)
+            {
+                Conversation.isGroupChat = ChatType;
+                Conversation = await Server.CreateConversationAsync(User, Conversation);
+                foreach (UserConversation userConversation in Partners)
+                {
+                    User Partner = await Server.GetUserAsync(User, userConversation.User.Username);
+                    await Server.CreateUserConversationAsync(User, Conversation, Partner, userConversation.isAdmin);
+                }
 
-				await Server.CreateUserConversationAsync(User, Conversation, await GetPartnerUser(partners[i].Trim()), userLevel);
-			}*/
-		}
+            }
+            else
+            {
+                await Server.PutConversationAsync(User, Conversation);
+                foreach (UserConversation userConversation in Conversation.UserConversations)
+                {
+                    UserConversation foundPartner = Partners.SingleOrDefault(uc => uc.User.Username == userConversation.User.Username);
 
-		async Task<User> GetPartnerUser(string partnerUsername)
-		{
-			return await Server.GetUserAsync(User, partnerUsername);
-		}
+                    if (foundPartner != null)
+                    {
+                        Partners.Remove(foundPartner);
+                        if (foundPartner.isAdmin != userConversation.isAdmin)
+                        {
+                            //TODO Add putuserconversation
+                            //User Partner = await Server.GetUserAsync(User, userConversation.User.Username);
+                            //await Server.PutUserConversationAsync(User, Conversation, Partner, foundPartner.isAdmin);
+                        }
+                    }
+                    else if (foundPartner == null)
+                    {
+                        User Partner = await Server.GetUserAsync(User, userConversation.User.Username);
+                        //await Server.DeleteUserConversationAsync(User, Conversation, Partner);
+                    }
+                }
+                foreach (UserConversation userConversation in Partners)
+                {
+                    User Partner = await Server.GetUserAsync(User, userConversation.User.Username);
+                    await Server.CreateUserConversationAsync(User, Conversation, Partner, userConversation.isAdmin);
+                }
+            }
+        }
 
-		public void AddPartner()
-		{
-			if (Conversation.isGroupChat || Partners.Count == 0)
-			{
-				Partners.Add(new UserConversation
-				{
-					isAdmin = false
-				});
-			}
-		}
+        public bool CheckEntered()
+        {
+            if (Conversation.ConversationName == "")
+            {
+                return false;
+            }
 
-		public void ChangeChatType(bool newChatType)
-		{
-			Conversation temp = Conversation;
-			temp.isGroupChat = true;
-			Conversation = null;
-			Conversation = temp;
-		}
-	}
+            foreach (UserConversation userConversation in Partners)
+            {
+                if (userConversation.User.Username == "")
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        async Task<User> GetPartnerUser(string partnerUsername)
+        {
+            return await Server.GetUserAsync(User, partnerUsername);
+        }
+
+        public void AddPartner()
+        {
+            Partners.Add(new UserConversation
+            {
+                User = new User
+                {
+                    Username = ""
+                },
+                isAdmin = false
+            });
+        }
+    }
 }

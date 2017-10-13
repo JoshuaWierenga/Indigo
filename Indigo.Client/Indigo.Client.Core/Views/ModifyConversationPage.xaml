@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:Helpers="clr-namespace:Indigo.Client.Core.Helpers"
+             xmlns:local="clr-namespace:Indigo.Client.Core.Views"
              x:Class="Indigo.Client.Core.Views.ModifyConversationPage">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="{Binding SaveText}" Clicked="Save_ClickedAsync"/>
@@ -9,32 +10,42 @@
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Conversation Name" VerticalTextAlignment="Center"/>
-            <Entry Text="{Binding Conversation.ConversationName, Mode=TwoWay}" HorizontalOptions="FillAndExpand"/>
+            <Entry Text="{Binding Conversation.ConversationName, Mode=TwoWay}" Placeholder="Can not be empty" HorizontalOptions="FillAndExpand"/>
             <StackLayout Orientation="Horizontal">
                 <Label Text="Group Chat" VerticalTextAlignment="Center"/>
-                <Switch Toggled="ChatType_ChangedAsync" IsToggled="{Binding Conversation.isGroupChat, Mode=TwoWay}" HorizontalOptions="EndAndExpand"/>
+                <Switch Toggled="ChatType_ChangedAsync" IsToggled="{Binding ChatType, Mode=TwoWay}" IsEnabled="{Binding NewConversation}" HorizontalOptions="EndAndExpand"/>
             </StackLayout>
             <StackLayout Orientation="Horizontal">
                 <Label Text="Conversation Partners"  VerticalTextAlignment="Center"/>
-                <Button Text="New User" Pressed="AddPartner_Pressed" HorizontalOptions="EndAndExpand"/>
+                <Button Text="New User" Pressed="AddPartner_PressedAsync" IsEnabled="{Binding ChatType}" HorizontalOptions="EndAndExpand"/>
             </StackLayout>
             <ListView ItemsSource="{Binding Partners, Mode=TwoWay}"
                                 CachingStrategy="RecycleElement"
                                 ItemSelected="Partner_Selected"
-                                SeparatorVisibility="None"
                                 HasUnevenRows="True">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <StackLayout>
-                                <StackLayout Orientation="Horizontal">
-                                    <Label Text="Name" VerticalTextAlignment="Center"/>
-                                    <Button Text="Delete" VerticalOptions="Center" HorizontalOptions="EndAndExpand"/>
-                                </StackLayout>
-                                <Entry Text="{Binding User.Username, Mode=TwoWay}" Placeholder="Can not be empty" HorizontalOptions="FillAndExpand"/>
-                                <StackLayout Orientation="Horizontal">
-                                    <Label Text="Admin" VerticalTextAlignment="Center" VerticalOptions="Center"/>
-                                    <Switch IsToggled="{Binding isAdmin}" VerticalOptions="Center" HorizontalOptions="EndAndExpand"/>
+                            <StackLayout Padding="0,1,0,1">
+                                <StackLayout.BackgroundColor>
+                                    <OnPlatform x:TypeArguments="Color"                                       
+                                                WinPhone="Gray"/>
+                                </StackLayout.BackgroundColor>
+                                <StackLayout>
+                                    <StackLayout.BackgroundColor>
+                                        <OnPlatform x:TypeArguments="Color"                                       
+                                                WinPhone="White"/>
+                                    </StackLayout.BackgroundColor>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="Name" VerticalTextAlignment="Center"/>
+                                        <Button Text="Delete" VerticalOptions="Center" HorizontalOptions="EndAndExpand"
+                                                Command="{x:Static local:ModifyConversationPage.RemovePartner_Pressed}" CommandParameter="{Binding}"/>
+                                    </StackLayout>
+                                    <Entry Text="{Binding User.Username, Mode=TwoWay}" Placeholder="Can not be empty" HorizontalOptions="FillAndExpand"/>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="Admin" VerticalTextAlignment="Center" VerticalOptions="Center"/>
+                                        <Switch IsToggled="{Binding isAdmin}" VerticalOptions="Center" HorizontalOptions="EndAndExpand"/>
+                                    </StackLayout>
                                 </StackLayout>
                             </StackLayout>
                         </ViewCell>
