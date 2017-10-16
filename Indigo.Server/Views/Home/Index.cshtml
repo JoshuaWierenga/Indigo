@@ -12,5 +12,13 @@
         sidebar.append("<p class=\"text-center\">Last edited: @(Model.LastEdited == DateTime.MinValue ? "Never" : Model.LastEdited.ToLongDateString())</p>");
     </script>
 }
-
-@Html.DisplayFor(model => model.Message)
+<form asp-action="Index">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="PageId" />
+    <input type="hidden" asp-for="Name" />
+    <div class="form-group">
+        <textarea asp-for="Message" style="width: 100%; height: calc(100vh - 67px); border: none"></textarea>
+        <span asp-validation-for="Message" class="text-danger"></span>
+    </div>
+    <input type="hidden" asp-for="LastEdited"/>
+</form>
