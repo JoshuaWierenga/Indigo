@@ -10,6 +10,21 @@
         var sidebar = $("#sidebar-wrapper").find("nav.sidebar-nav");
         sidebar.append("<p class=\"text-center\">Page name: @Html.DisplayFor(model => model.Name)</p>")
         sidebar.append("<p class=\"text-center\">Last edited: @(Model.LastEdited == DateTime.MinValue ? "Never" : Model.LastEdited.ToLongDateString())</p>");
+        sidebar.append("</br>");
+        sidebar.append("<input id=\"newpage\" class=\"form-control\" placeholder=\"goto page\"></input>");
+        sidebar.append("<button id=\"changepage\" class=\"btn btn-default center-block\">Goto</button>");
+        sidebar.append("</br></br>");
+        if (window.location.pathname != "/")
+        {
+            sidebar.append("<button id=\"rootpage\" class=\"btn btn-default center-block\">Return to main page</button>");
+        }
+
+        $("#changepage").click(function (e) {
+            window.location.pathname = "home/" + $("#newpage").val();
+        });
+        $("#rootpage").click(function (e) {
+            window.location.pathname = "";
+        });
     </script>
 }
 <form asp-action="Index">
