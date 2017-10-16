@@ -1,1 +1,4 @@
-﻿// Write your JavaScript code.
+﻿$("#menu-toggle").click(function (e) {
+    e.preventDefault();
+    $("#wrapper").toggleClass("toggled");
+});

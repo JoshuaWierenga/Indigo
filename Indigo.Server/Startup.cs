@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using Indigo.Server.Models;
 
 namespace Indigo.Server
 {
@@ -22,6 +24,9 @@ namespace Indigo.Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            services.AddDbContext<IndigoContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("IndigoContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,6 +46,12 @@ namespace Indigo.Server
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    name: "page-route",
+                    template: "{id?}",
+                    defaults: new {controller = "Home", action = "Index" }
+                    );
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
