@@ -48,7 +48,7 @@ namespace Indigo.Server
             {
                 routes.MapRoute(
                     name: "page-route",
-                    template: "{id?}",
+                    template: "{pagename?}",
                     defaults: new {controller = "Home", action = "Index" }
                     );
 

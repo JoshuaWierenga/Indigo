@@ -1,17 +1,7 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model Indigo.Core.Page
+
+@{
+    ViewData["Title"] = "Index";
 }
 
-<p>@ViewData["Message"]</p>
-<p>
-
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ac urna ac nibh tempor varius. Proin vitae enim sed massa volutpat tincidunt eu nec felis. Mauris convallis libero ut libero aliquam, ut varius lectus vehicula. Aliquam non viverra quam, a laoreet nunc. Donec elementum velit massa, eget posuere purus tristique non. Aenean in ex tortor. Praesent rutrum hendrerit blandit. Vestibulum euismod magna a felis sodales sollicitudin. Nam quis orci ipsum.
-
-    Cras facilisis sem ex, eu gravida erat fermentum nec. Nunc ut eros condimentum, luctus tellus eleifend, cursus neque. Nullam sapien turpis, congue id bibendum ut, pulvinar quis ante. Proin eu congue dolor. Integer vulputate nibh vel est dictum, in porttitor nibh facilisis. Nulla vehicula ligula sit amet lacus viverra porta sollicitudin in velit. Nullam sem nisl, lacinia malesuada neque id, consequat accumsan lorem. Donec tristique efficitur erat, sed scelerisque ante blandit ut. Nullam sit amet sodales lorem. Nunc dignissim lorem eu ex varius commodo. Duis scelerisque nibh massa, vitae blandit enim vehicula ut. Maecenas tempus augue vitae ipsum aliquam, in finibus enim hendrerit.
-
-    Aliquam ullamcorper finibus justo eget auctor. Sed elementum quam lectus, a luctus ligula auctor sit amet. Sed facilisis sagittis turpis eget accumsan. Vestibulum lectus ipsum, dictum non risus eu, sodales aliquam lectus. Donec ac est egestas, maximus mi a, venenatis odio. Nam sodales sapien id tellus eleifend ultrices. Etiam eu convallis tortor, nec mollis arcu.
-
-    Aenean vulputate ut nisi nec faucibus. Aenean lacinia, justo vel elementum eleifend, est nunc mattis ligula, sed scelerisque ante velit quis nulla. Cras eu est sed magna rutrum tincidunt gravida id elit. Vivamus consequat neque mattis libero ultrices gravida. Integer cursus nulla eu volutpat dictum. Vivamus luctus purus nec risus porttitor placerat. Vestibulum eget euismod dui, vel cursus urna.
-
-    Integer luctus dui turpis, at consectetur mauris rhoncus a. Sed et cursus elit. Nam velit ligula, maximus a porttitor egestas, finibus eu lectus. Curabitur fermentum odio non quam dapibus maximus et a risus. Donec efficitur lacinia lacus sed mattis. Duis convallis nisi vitae viverra iaculis. Donec auctor augue in felis sagittis vulputate. Morbi ac massa mollis, egestas nulla nec, mattis leo. Suspendisse iaculis nulla vel urna scelerisque, sit amet scelerisque dolor pellentesque. Nam facilisis orci quam, ac interdum lacus pharetra vitae. Nunc tempor aliquet justo vel varius. Maecenas commodo pulvinar felis, nec faucibus nibh bibendum sed. Donec ornare finibus consequat. Integer commodo tincidunt luctus. Ut quis sollicitudin risus, eu aliquet ligula. Vivamus nulla nunc, venenatis luctus dolor at, congue lobortis neque.
-</p>
+@Html.DisplayFor(model => model.Message)

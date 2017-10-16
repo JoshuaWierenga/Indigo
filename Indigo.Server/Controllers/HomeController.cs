@@ -1,16 +1,28 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Indigo.Server.Models;
+using System.Threading.Tasks;
+using Indigo.Core;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Indigo.Server.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index(string id)
-        {
-            ViewData["Message"] = id;
+        private readonly IndigoContext _context;
 
-            return View();
+        public HomeController(IndigoContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<IActionResult> Index(string pagename)
+        {
+            Page foundPage = await _context.Pages.SingleOrDefaultAsync(p => p.Name == pagename);
+
+            return View(foundPage == null ? foundPage : new Page());
+            
         }
 
         public IActionResult Error()

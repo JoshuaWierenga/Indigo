@@ -14,6 +14,6 @@ namespace Indigo.Server.Models
         {
         }
 
-        public DbSet<Indigo.Core.Page> Pages { get; set; }
+        public DbSet<Page> Pages { get; set; }
     }
 }
