@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Indigo.Core;
+﻿using Microsoft.EntityFrameworkCore;
+using Indigo.Core.Models;
 
 namespace Indigo.Server.Models
 {

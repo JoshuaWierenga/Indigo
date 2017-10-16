@@ -2,8 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Indigo.Server.Models;
 using System.Threading.Tasks;
-using Indigo.Core;
-using System.Linq;
+using Indigo.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Indigo.Server.Controllers
@@ -21,7 +20,10 @@ namespace Indigo.Server.Controllers
         {
             Page foundPage = await _context.Pages.SingleOrDefaultAsync(p => p.Name == pagename);
 
-            return View(foundPage == null ? foundPage : new Page());
+            return View(foundPage != null ? foundPage : new Page
+            {
+                Name = pagename != null ? pagename : "home"          
+            });
             
         }
 

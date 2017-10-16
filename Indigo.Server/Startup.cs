@@ -47,14 +47,13 @@ namespace Indigo.Server
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "page-route",
-                    template: "{pagename?}",
-                    defaults: new {controller = "Home", action = "Index" }
-                    );
-
-                routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapRoute(
+                    name: "page-route",
+                    template: "home/{*pagename}",
+                    defaults: new { controller = "Home", action = "Index" });
             });
         }
     }

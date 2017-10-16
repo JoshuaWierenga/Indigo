@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Indigo.Core
+namespace Indigo.Core.Models
 {
     public class Page
     {

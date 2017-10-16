@@ -1,7 +1,16 @@
-﻿@model Indigo.Core.Page
+﻿@model Indigo.Core.Models.Page
 
 @{
     ViewData["Title"] = "Index";
+}
+
+@section Scripts
+    {
+    <script>
+        var sidebar = $("#sidebar-wrapper").find("nav.sidebar-nav");
+        sidebar.append("<p class=\"text-center\">Page name: @Html.DisplayFor(model => model.Name)</p>")
+        sidebar.append("<p class=\"text-center\">Last edited: @(Model.LastEdited == DateTime.MinValue ? "Never" : Model.LastEdited.ToLongDateString())</p>");
+    </script>
 }
 
 @Html.DisplayFor(model => model.Message)
