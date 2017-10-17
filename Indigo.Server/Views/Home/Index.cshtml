@@ -23,12 +23,13 @@
 
         var sidebar = $("#sidebar-wrapper").find("nav.sidebar-nav");
         sidebar.append("<p class=\"text-center\">Page name: @Html.DisplayFor(model => model.Name)</p>")
-        sidebar.append("<p class=\"text-center\">Last edited: @(Model.LastEdited == DateTime.MinValue ? "Never" : Model.LastEdited.ToLongDateString())</p>");
-        sidebar.append("</br>");
+        sidebar.append("<p class=\"text-center\">Last edited:<br/>" + 
+            "@(Model.LastEdited != default(DateTime) ? Model.LastEdited.ToLocalTime().ToString("F") : "Never")</p > ");
+        sidebar.append("<br/>");
         sidebar.append("<input id=\"newpage\" class=\"form-control\" placeholder=\"goto page\"></input>");
         sidebar.append("<button id=\"changepage\" class=\"btn btn-default center-block\">Goto</button>");
         if (window.location.pathname != "/") {
-            sidebar.append("</br></br>");
+            sidebar.append("<br/><br/>");
             sidebar.append("<button id=\"rootpage\" class=\"btn btn-default center-block\">Return to main page</button>");
         }
 
@@ -55,7 +56,7 @@
         $('#message').bind('input propertychange', function () {
             if (messageChanged == false) {
                 messageChanged = true;
-                sidebar.append("<div id=\"savepadding\"></br></br></div>");
+                sidebar.append("<div id=\"savepadding\"><br/><br/></div>");
                 sidebar.append("<button id=\"savepage\" class=\"btn btn-default center-block\">Save Changes</button>");
             }
             else if ($('#message').val() == oldmessage) {
