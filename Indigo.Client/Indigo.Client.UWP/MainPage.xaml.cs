@@ -19,9 +19,9 @@ namespace Indigo.Client.UWP
     {
         public MainPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
-            LoadApplication(new Indigo.Client.App());
+            LoadApplication(new Client.App());
         }
     }
 }
