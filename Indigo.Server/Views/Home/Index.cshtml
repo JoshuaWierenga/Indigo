@@ -4,36 +4,65 @@
     ViewData["Title"] = "Index";
 }
 
+<form asp-action="Index">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="PageId" />
+    <input type="hidden" asp-for="Name" />
+    <div class="form-group">
+        <textarea asp-for="Message" id="message" style="width: 100%; height: calc(100vh - 67px); border: none"></textarea>
+        <span asp-validation-for="Message" class="text-danger"></span>
+    </div>
+    <input type="hidden" asp-for="LastEdited" />
+</form>
+
 @section Scripts
-    {
+ {
     <script>
+        var oldmessage = $('#message').val();
+        var messageChanged = false;
+
         var sidebar = $("#sidebar-wrapper").find("nav.sidebar-nav");
         sidebar.append("<p class=\"text-center\">Page name: @Html.DisplayFor(model => model.Name)</p>")
         sidebar.append("<p class=\"text-center\">Last edited: @(Model.LastEdited == DateTime.MinValue ? "Never" : Model.LastEdited.ToLongDateString())</p>");
         sidebar.append("</br>");
         sidebar.append("<input id=\"newpage\" class=\"form-control\" placeholder=\"goto page\"></input>");
         sidebar.append("<button id=\"changepage\" class=\"btn btn-default center-block\">Goto</button>");
-        sidebar.append("</br></br>");
-        if (window.location.pathname != "/")
-        {
+        if (window.location.pathname != "/") {
+            sidebar.append("</br></br>");
             sidebar.append("<button id=\"rootpage\" class=\"btn btn-default center-block\">Return to main page</button>");
         }
 
-        $("#changepage").click(function (e) {
+        $("#changepage").click(function () {
             window.location.pathname = "home/" + $("#newpage").val();
         });
-        $("#rootpage").click(function (e) {
+        $("#rootpage").click(function () {
             window.location.pathname = "";
+        });
+        $(document).on("click", "#savepage", function () {
+            var formdata = new FormData($('form').get(0));
+            $.ajax({
+                url: "@Url.Action("Save", "Home")",
+                type: "POST",
+                data: formdata,
+                processData: false,
+                contentType: false,
+                success: function() {
+                    location.reload();
+                }
+            });           
+        });
+
+        $('#message').bind('input propertychange', function () {
+            if (messageChanged == false) {
+                messageChanged = true;
+                sidebar.append("<div id=\"savepadding\"></br></br></div>");
+                sidebar.append("<button id=\"savepage\" class=\"btn btn-default center-block\">Save Changes</button>");
+            }
+            else if ($('#message').val() == oldmessage) {
+                messageChanged = false;
+                $("#savepadding").remove();
+                $("#savepage").remove();
+            }
         });
     </script>
 }
-<form asp-action="Index">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" asp-for="PageId" />
-    <input type="hidden" asp-for="Name" />
-    <div class="form-group">
-        <textarea asp-for="Message" style="width: 100%; height: calc(100vh - 67px); border: none"></textarea>
-        <span asp-validation-for="Message" class="text-danger"></span>
-    </div>
-    <input type="hidden" asp-for="LastEdited"/>
-</form>
