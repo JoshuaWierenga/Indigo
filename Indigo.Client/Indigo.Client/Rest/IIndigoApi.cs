@@ -8,5 +8,11 @@ namespace Indigo.Client.Rest
     {
         [Get("/api/{pagename}")]
         Task<Page> GetPageAsync(string pagename);
+
+        [Post("/api")]
+        Task<Page> PostPageAsync(Page currentPage);
+
+        [Put("/api/{pagename}")]
+        Task PutPageAsync(string pagename, Page currentPage);
     }
 }

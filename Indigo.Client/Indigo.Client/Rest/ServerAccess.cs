@@ -1,5 +1,6 @@
 ﻿using Indigo.Core.Models;
 using Refit;
+using System;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -22,6 +23,31 @@ namespace Indigo.Client.Rest
                     return null;
                 }
 
+                throw;
+            }
+        }
+
+        public async Task<Page> PostPageAsync(Page currentPage)
+        {
+            try
+            {
+                return await Api.PostPageAsync(currentPage);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task PutPageAsync(Page currentPage)
+        {
+            try
+            {
+                await Api.PutPageAsync(currentPage.Name, currentPage);
+            }
+            catch (Exception)
+            {
                 throw;
             }
         }

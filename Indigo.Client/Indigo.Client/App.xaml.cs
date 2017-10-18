@@ -16,7 +16,7 @@ namespace Indigo.Client
         {
             InitializeComponent();
 
-            MainPage = new PageDisplayPage();
+            MainPage = new NavigationPage(new PageDisplayPage());
         }
 
         protected override void OnStart()

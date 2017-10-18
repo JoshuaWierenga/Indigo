@@ -6,12 +6,12 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
-                <Entry HorizontalOptions="CenterAndExpand" Placeholder="Enter page name here" TextChanged="PageName_Changed"/>
+                <Entry HorizontalOptions="CenterAndExpand" Placeholder="Enter page name here" Text="{Binding Page.Name, Mode=OneWayToSource}" TextChanged="PageName_Changed"/>
                 <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
                     <Label Text="Last Edited: "/>
                     <Label Text="{Binding LastEdited}"/>
                 </StackLayout>
-                <Editor VerticalOptions="FillAndExpand" Keyboard="Chat" Text="{Binding PageMessage, Mode=TwoWay}}"/>
+                <Editor VerticalOptions="FillAndExpand" Keyboard="Chat" Text="{Binding PageMessage, Mode=TwoWay}" TextChanged="PageMessage_Changed"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
