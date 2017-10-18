@@ -4,7 +4,12 @@
              x:Class="Indigo.Client.Views.PageDisplayPage">
     <ContentPage.Content>
         <StackLayout>
-            <Editor Text="{Binding PageMessage}}"></Editor>
+            <Entry x:Name="NameEntry" HorizontalOptions="CenterAndExpand" Placeholder="Enter page name here" Text="{Binding PageName, Mode=OneWayToSource}"/>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                <Label Text="Last Edited: "/>
+                <Label Text="{Binding LastEdited, Converter=}"/>
+            </StackLayout>
+            <Editor VerticalOptions="FillAndExpand" Keyboard="Chat" Text="{Binding PageMessage, Mode=TwoWay}}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

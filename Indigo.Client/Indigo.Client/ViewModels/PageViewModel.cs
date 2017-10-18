@@ -1,8 +1,6 @@
 ﻿using Indigo.Core.Models;
 using MvvmHelpers;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Indigo.Client.ViewModels
 {
@@ -22,9 +20,16 @@ namespace Indigo.Client.ViewModels
             set => SetProperty(ref _PageMessage, value);
         }
 
+        DateTime _LastEdited;
+        public DateTime LastEdited
+        {
+            get => _LastEdited;
+            set => SetProperty(ref _LastEdited, value);
+        }
+
         public PageViewModel()
         {
-            PageName = "Page Name Here";
+            LastEdited = DateTime.Now;
             PageMessage = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.Suspendisse rhoncus, nisi ut consequat fringilla, lectus sem porttitor arcu, non pretium odio tellus in lectus.Vivamus rutrum imperdiet tincidunt. Sed dolor elit, laoreet a massa at, consectetur aliquet erat. Mauris pulvinar quam in ipsum tempus, bibendum convallis turpis vulputate.Nulla id lorem bibendum, sollicitudin nulla quis, varius felis.Nullam rutrum ullamcorper enim eu bibendum. Fusce sit amet arcu feugiat, laoreet odio sed, pretium urna." +
                 "Donec sed quam vitae ex iaculis sollicitudin a vulputate justo. Aliquam risus ante, iaculis lobortis lectus vel, varius aliquam mi. Suspendisse potenti. Phasellus imperdiet lorem justo, quis rhoncus nulla rutrum eu. Suspendisse fermentum pharetra est. In nec nisi leo. Sed eu est auctor, vestibulum ante in, tincidunt ligula. Sed rutrum, metus vitae tempus cursus, velit ante sollicitudin erat, eu elementum urna neque ac lacus.Nulla facilisi. Nullam ut egestas magna." +
                 "Donec eget urna in lectus imperdiet varius.Praesent accumsan urna nec est congue gravida.Fusce malesuada commodo neque at posuere. Nunc id quam iaculis, consectetur lorem at, porttitor nisi.Vivamus et est purus. Cras magna nulla, viverra eget nisl sed, vestibulum condimentum nunc. Nam libero augue, vestibulum vel ultrices a, feugiat ac metus." +

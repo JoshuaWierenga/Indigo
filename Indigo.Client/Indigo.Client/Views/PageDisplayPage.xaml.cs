@@ -20,6 +20,8 @@ namespace Indigo.Client.Views
 			InitializeComponent();
 
             BindingContext = viewModel = new PageViewModel();
-		}
+
+            NameEntry.Unfocus();
+        }
 	}
 }
