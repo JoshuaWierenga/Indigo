@@ -9,52 +9,45 @@ using Indigo.Server.Models;
 namespace Indigo.Server.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Pages")]
-    public class PagesController : Controller
+    [Route("api")]
+    public class PagesApiController : Controller
     {
         private readonly IndigoContext _context;
 
-        public PagesController(IndigoContext context)
+        public PagesApiController(IndigoContext context)
         {
             _context = context;
         }
 
-        // GET: api/Pages
-        [HttpGet]
-        public IEnumerable<Page> GetPage()
-        {
-            return _context.Pages;
-        }
-
         // GET: api/Pages/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetPage([FromRoute] int id)
+        [HttpGet("{*pageName}")]
+        public async Task<IActionResult> GetPage([FromRoute] string pageName)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var page = await _context.Pages.SingleOrDefaultAsync(m => m.PageId == id);
+            var foundPage = await _context.Pages.SingleOrDefaultAsync(p => p.Name == pageName);
 
-            if (page == null)
+            if (foundPage == null)
             {
                 return NotFound();
             }
 
-            return Ok(page);
+            return Ok(foundPage);
         }
 
         // PUT: api/Pages/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutPage([FromRoute] int id, [FromBody] Page page)
+        [HttpPut("{*pageName}")]
+        public async Task<IActionResult> PutPage([FromRoute] string pageName, [FromBody] Page page)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != page.PageId)
+            if (pageName != page.Name)
             {
                 return BadRequest();
             }
@@ -67,7 +60,7 @@ namespace Indigo.Server.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PageExists(id))
+                if (!_context.Pages.Any(p => p.Name == page.Name))
                 {
                     return NotFound();
                 }
@@ -92,33 +85,7 @@ namespace Indigo.Server.Controllers
             _context.Pages.Add(page);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetPage", new { id = page.PageId }, page);
-        }
-
-        // DELETE: api/Pages/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePage([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var page = await _context.Pages.SingleOrDefaultAsync(m => m.PageId == id);
-            if (page == null)
-            {
-                return NotFound();
-            }
-
-            _context.Pages.Remove(page);
-            await _context.SaveChangesAsync();
-
-            return Ok(page);
-        }
-
-        private bool PageExists(int id)
-        {
-            return _context.Pages.Any(e => e.PageId == id);
+            return CreatedAtAction("GetPage", new { PageName = page.Name }, page);
         }
     }
 }
