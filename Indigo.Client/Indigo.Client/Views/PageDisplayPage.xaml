@@ -1,15 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Helpers="clr-namespace:Indigo.Client.Helpers"
              x:Class="Indigo.Client.Views.PageDisplayPage">
     <ContentPage.Content>
-        <StackLayout>
-            <Entry x:Name="NameEntry" HorizontalOptions="CenterAndExpand" Placeholder="Enter page name here" Text="{Binding PageName, Mode=OneWayToSource}"/>
-            <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
-                <Label Text="Last Edited: "/>
-                <Label Text="{Binding LastEdited, Converter=}"/>
+        <ScrollView>
+            <StackLayout>
+                <Entry x:Name="NameEntry" HorizontalOptions="CenterAndExpand" Placeholder="Enter page name here" Text="{Binding PageName, Mode=OneWayToSource}"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                    <Label Text="Last Edited: "/>
+                    <Label Text="{Binding LastEdited, Converter={Helpers:FullLocalDateTimeConverter}}"/>
+                </StackLayout>
+                <Editor VerticalOptions="FillAndExpand" Keyboard="Chat" Text="{Binding PageMessage, Mode=TwoWay}}"/>
             </StackLayout>
-            <Editor VerticalOptions="FillAndExpand" Keyboard="Chat" Text="{Binding PageMessage, Mode=TwoWay}}"/>
-        </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>
