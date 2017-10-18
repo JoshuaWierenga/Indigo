@@ -9,6 +9,8 @@ namespace Indigo.Client.Views
 	public partial class PageDisplayPage : ContentPage
 	{
         PageViewModel viewModel;
+        ToolbarItem saveButton;
+        bool saveDisplayed;
 
 		public PageDisplayPage()
 		{
