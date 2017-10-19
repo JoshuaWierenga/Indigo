@@ -9,7 +9,7 @@
     <input type="hidden" asp-for="PageId" />
     <input type="hidden" asp-for="Name" />
     <div class="form-group">
-        <textarea asp-for="Message" id="message" style="width: 100%; height: calc(100vh - 67px); border: none"></textarea>
+        <markdown
         <span asp-validation-for="Message" class="text-danger"></span>
     </div>
     <input type="hidden" asp-for="LastEdited" />
