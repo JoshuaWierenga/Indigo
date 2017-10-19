@@ -1,5 +1,6 @@
 ﻿using Indigo.Client.ViewModels;
-using System.Threading.Tasks;
+using ViewMarkdown.Forms.Plugin.Abstractions;
+using CommonMark;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -12,11 +13,29 @@ namespace Indigo.Client.Views
         ToolbarItem saveButton;
         bool saveDisplayed;
 
+        WebView webView;
+
 		public PageDisplayPage()
 		{
 			InitializeComponent();
 
             BindingContext = viewModel = new PageViewModel();
+
+            MarkdownView markdownView = new MarkdownView
+            {
+                Markdown = "## h2",
+                VerticalOptions = LayoutOptions.FillAndExpand
+            };
+
+
+            webView = new WebView
+            {
+                VerticalOptions = LayoutOptions.FillAndExpand
+            };
+
+
+            pagedisplayer.Children.Add(webView);
+
             saveButton = new ToolbarItem("Save Changes", "ic_save.png", async () =>
             {
                 await viewModel.SavePageAsync();
@@ -49,6 +68,10 @@ namespace Indigo.Client.Views
         {
             base.OnAppearing();
             await viewModel.GetPageAsync("home");
+            webView.Source = new HtmlWebViewSource
+            {
+                Html = CommonMarkConverter.Convert(viewModel.PageMessage)
+            };
         }
     }
 }

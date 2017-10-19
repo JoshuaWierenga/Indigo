@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Indigo.Core.Models;
 using Indigo.Server.Models;
+using System.Text.RegularExpressions;
 
 namespace Indigo.Server.Controllers
 {
@@ -52,6 +53,9 @@ namespace Indigo.Server.Controllers
                 return BadRequest();
             }
 
+            string noHtmlMessage = Regex.Replace(page.Message, @"<[^>]+>|&nbsp;", "").Trim();
+            page.Message = Regex.Replace(noHtmlMessage, @"\s{2,}", " ");
+
             _context.Entry(page).State = EntityState.Modified;
 
             try
@@ -81,6 +85,9 @@ namespace Indigo.Server.Controllers
             {
                 return BadRequest(ModelState);
             }
+
+            string noHtmlMessage = Regex.Replace(page.Message, @"<[^>]+>|&nbsp;", "").Trim();
+            page.Message = Regex.Replace(noHtmlMessage, @"\s{2,}", " ");
 
             _context.Pages.Add(page);
             await _context.SaveChangesAsync();

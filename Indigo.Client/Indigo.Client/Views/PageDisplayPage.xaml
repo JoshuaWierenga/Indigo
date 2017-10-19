@@ -1,17 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:Helpers="clr-namespace:Indigo.Client.Helpers"
              x:Class="Indigo.Client.Views.PageDisplayPage">
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout>
+            <StackLayout x:Name="pagedisplayer">
                 <Entry HorizontalOptions="CenterAndExpand" Placeholder="Enter page name here" Text="{Binding Page.Name, Mode=OneWayToSource}" TextChanged="PageName_Changed"/>
                 <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
                     <Label Text="Last Edited: "/>
                     <Label Text="{Binding LastEdited}"/>
                 </StackLayout>
-                <Editor VerticalOptions="FillAndExpand" Keyboard="Chat" Text="{Binding PageMessage, Mode=TwoWay}" TextChanged="PageMessage_Changed"/>
+                <!--<Editor VerticalOptions="FillAndExpand" Keyboard="Chat" Text="{Binding PageMessage, Mode=TwoWay}" TextChanged="PageMessage_Changed"/>-->
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
