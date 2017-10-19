@@ -8,7 +8,7 @@
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="PageId" />
     <input type="hidden" asp-for="Name" />
-    <div id="messagemarkdown">@Html.Raw(CommonMark.CommonMarkConverter.Convert(Model.Message))</div>
+    <div id="messagemarkdown">@Html.Raw(ViewData["Markdown"])</div>
     <textarea asp-for="Message" id="message" style="width: 100%; height: calc(100vh - 67px); border: none; resize: none; display: none"></textarea>
     <input type="hidden" asp-for="LastEdited" />
 </form>
