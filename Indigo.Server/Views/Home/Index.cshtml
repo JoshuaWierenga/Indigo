@@ -8,10 +8,8 @@
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="PageId" />
     <input type="hidden" asp-for="Name" />
-    <div class="form-group">
-        <markdown
-        <span asp-validation-for="Message" class="text-danger"></span>
-    </div>
+    <div id="messagemarkdown">@Html.Raw(CommonMark.CommonMarkConverter.Convert(Model.Message))</div>
+    <textarea asp-for="Message" id="message" style="width: 100%; height: calc(100vh - 67px); border: none; resize: none; display: none"></textarea>
     <input type="hidden" asp-for="LastEdited" />
 </form>
 
@@ -22,9 +20,10 @@
         var messageChanged = false;
 
         var sidebar = $("#sidebar-wrapper").find("nav.sidebar-nav");
-        sidebar.append("<p class=\"text-center\">Page name: @Html.DisplayFor(model => model.Name)</p>")
+        sidebar.append("<p class=\"text-center\">Page name: @Html.DisplayFor(model => model.Name)</p>");
         sidebar.append("<p class=\"text-center\">Last edited:<br/>" + 
-            "@(Model.LastEdited != default(DateTime) ? Model.LastEdited.ToLocalTime().ToString("F") : "Never")</p > ");
+            "@(Model.LastEdited != default(DateTime) ? Model.LastEdited.ToLocalTime().ToString("F") : "Never")</p>");
+        sidebar.append("<button id=\"editpage\" class=\"btn btn-default center-block\">Edit Page</button>");
         sidebar.append("<br/>");
         sidebar.append("<input id=\"newpage\" class=\"form-control\" placeholder=\"goto page\"></input>");
         sidebar.append("<button id=\"changepage\" class=\"btn btn-default center-block\">Goto</button>");
@@ -38,6 +37,11 @@
         });
         $("#rootpage").click(function () {
             window.location.pathname = "";
+        });
+        $('#editpage').click(function () {
+            $('#messagemarkdown').remove();
+            $('#message').css("display", "").focus();
+            $(this).remove();
         });
         $(document).on("click", "#savepage", function () {
             var formdata = new FormData($('form').get(0));
