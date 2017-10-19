@@ -17,9 +17,10 @@ namespace Indigo.Client.Views
 			InitializeComponent();
 
             BindingContext = viewModel = new PageViewModel();
-            saveButton = new ToolbarItem("Save Changes", "", async () =>
+            saveButton = new ToolbarItem("Save Changes", "ic_save.png", async () =>
             {
                 await viewModel.SavePageAsync();
+                PageMessage_Changed(this, new TextChangedEventArgs("", viewModel.Page.Message));
             });
             saveDisplayed = false;
         }
