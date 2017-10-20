@@ -23,7 +23,7 @@ namespace Indigo.Server.Controllers
         {
             Page foundPage = pagename != null ? await GetPage(pagename) : await GetPage("home");
 
-            ViewData.Add("Markdown", Markdown.ToHtml(foundPage.Message, new MarkdownPipelineBuilder().UseAdvancedExtensions().Build()));
+            ViewData.Add("Markdown", Markdown.ToHtml(foundPage.Message ?? "", new MarkdownPipelineBuilder().UseAdvancedExtensions().Build()));
 
             return View(foundPage);
         }
