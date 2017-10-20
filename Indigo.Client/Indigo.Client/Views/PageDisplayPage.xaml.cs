@@ -1,8 +1,7 @@
 ﻿using Indigo.Client.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using Markdig;
-using System.Threading.Tasks;
+using System;
 
 namespace Indigo.Client.Views
 {
@@ -10,17 +9,12 @@ namespace Indigo.Client.Views
     public partial class PageDisplayPage : ContentPage
     {
         PageViewModel viewModel;
-        ToolbarItem editSaveButton;
 
         public PageDisplayPage()
         {
             InitializeComponent();
 
             BindingContext = viewModel = new PageViewModel();
-
-            editSaveButton = new ToolbarItem("Edit Page", "ic_edit.png", async () => await EditSave_Clicked());
-
-            ToolbarItems.Add(editSaveButton);
         }
 
         async void PageName_Changed(object sender, TextChangedEventArgs e)
@@ -29,8 +23,10 @@ namespace Indigo.Client.Views
             await viewModel.GetPageAsync(pageName);
         }
 
-        async Task EditSave_Clicked()
+        async void EditSave_Clicked(object sender, EventArgs e)
         {
+            ToolbarItem editSaveButton = (ToolbarItem)sender;
+
             if (editSaveButton.Text == "Edit Page")
             {
                 editSaveButton.Text = "Save Changes";

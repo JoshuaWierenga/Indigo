@@ -9,7 +9,7 @@ namespace Indigo.Client.Helpers
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return Markdown.ToHtml((string)value, new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
+            return Markdown.ToHtml((string)value ?? "", new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
