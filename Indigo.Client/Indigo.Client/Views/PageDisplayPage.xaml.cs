@@ -25,7 +25,7 @@ namespace Indigo.Client.Views
                 VerticalOptions = LayoutOptions.FillAndExpand
             };
 
-            editSaveButton = new ToolbarItem("Edit Page", "", async () => await EditSave_Clicked());
+            editSaveButton = new ToolbarItem("Edit Page", "ic_edit.png", async () => await EditSave_Clicked());
 
             pageView.Children.Add(webView);
             ToolbarItems.Add(editSaveButton);
@@ -56,7 +56,7 @@ namespace Indigo.Client.Views
                 }
                 
                 editSaveButton.Text = "Edit Page";
-                editSaveButton.Icon = "";
+                editSaveButton.Icon = "ic_edit.png";
                 webView.IsVisible = true;
                 pageEditor.IsVisible = false;                
             }

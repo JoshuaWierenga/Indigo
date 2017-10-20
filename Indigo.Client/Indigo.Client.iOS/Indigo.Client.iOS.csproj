@@ -138,6 +138,9 @@
     <ImageAsset Include="Resources\Media.xcassets\AppIcons.appiconset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
+	<ImageAsset Include="Resources\Media.xcassets\ic_edit.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
     <ImageAsset Include="Resources\Media.xcassets\ic_save.imageset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>

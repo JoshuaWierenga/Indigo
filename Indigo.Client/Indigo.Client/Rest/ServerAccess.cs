@@ -8,7 +8,7 @@ namespace Indigo.Client.Rest
 {
     public class ServerAccess
     {
-        IIndigoApi Api = RestService.For<IIndigoApi>("http://localhost:8080");
+        IIndigoApi Api = RestService.For<IIndigoApi>("http://192.168.0.2");
 
         public async Task<Page> GetPageAsync(string username)
         {
