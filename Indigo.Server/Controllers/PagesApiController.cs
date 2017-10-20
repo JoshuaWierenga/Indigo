@@ -53,9 +53,7 @@ namespace Indigo.Server.Controllers
                 return BadRequest();
             }
 
-            string noHtmlMessage = Regex.Replace(page.Message, @"<[^>]+>|&nbsp;", "").Trim();
-            page.Message = Regex.Replace(noHtmlMessage, @"\s{2,}", " ");
-
+            page.Message = Regex.Replace(page.Message, @"<[^>]+>|&nbsp;", "").Trim();
             _context.Entry(page).State = EntityState.Modified;
 
             try
@@ -86,9 +84,7 @@ namespace Indigo.Server.Controllers
                 return BadRequest(ModelState);
             }
 
-            string noHtmlMessage = Regex.Replace(page.Message, @"<[^>]+>|&nbsp;", "").Trim();
-            page.Message = Regex.Replace(noHtmlMessage, @"\s{2,}", " ");
-
+            page.Message = Regex.Replace(page.Message, @"<[^>]+>|&nbsp;", "").Trim();
             _context.Pages.Add(page);
             await _context.SaveChangesAsync();
 

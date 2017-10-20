@@ -2,7 +2,6 @@
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Markdig;
-using System;
 using System.Threading.Tasks;
 
 namespace Indigo.Client.Views
@@ -12,7 +11,6 @@ namespace Indigo.Client.Views
     {
         PageViewModel viewModel;
         ToolbarItem editSaveButton;
-        WebView webView;
 
         public PageDisplayPage()
         {
@@ -20,14 +18,8 @@ namespace Indigo.Client.Views
 
             BindingContext = viewModel = new PageViewModel();
 
-            webView = new WebView
-            {
-                VerticalOptions = LayoutOptions.FillAndExpand
-            };
-
             editSaveButton = new ToolbarItem("Edit Page", "ic_edit.png", async () => await EditSave_Clicked());
 
-            pageView.Children.Add(webView);
             ToolbarItems.Add(editSaveButton);
         }
 
@@ -35,7 +27,6 @@ namespace Indigo.Client.Views
         {
             string pageName = e.NewTextValue != "" ? e.NewTextValue : "home";
             await viewModel.GetPageAsync(pageName);
-            UpdateMarkdownView();
         }
 
         async Task EditSave_Clicked()
@@ -44,7 +35,7 @@ namespace Indigo.Client.Views
             {
                 editSaveButton.Text = "Save Changes";
                 editSaveButton.Icon = "ic_save.png";
-                webView.IsVisible = false;
+                markdownViewer.IsVisible = false;
                 pageEditor.IsVisible = true;
             }
             else
@@ -52,29 +43,19 @@ namespace Indigo.Client.Views
                 if (viewModel.PageMessage != viewModel.Page.Message)
                 {
                     await viewModel.SavePageAsync();
-                    UpdateMarkdownView();
                 }
                 
                 editSaveButton.Text = "Edit Page";
                 editSaveButton.Icon = "ic_edit.png";
-                webView.IsVisible = true;
+                markdownViewer.IsVisible = true;
                 pageEditor.IsVisible = false;                
             }
-        }
-
-        void UpdateMarkdownView()
-        {
-            webView.Source = new HtmlWebViewSource
-            {
-                Html = Markdown.ToHtml(viewModel.PageMessage, new MarkdownPipelineBuilder().UseAdvancedExtensions().Build())
-            };
         }
 
         protected override async void OnAppearing()
         {
             base.OnAppearing();
             await viewModel.GetPageAsync("home");
-            UpdateMarkdownView();
         }
     }
 }
