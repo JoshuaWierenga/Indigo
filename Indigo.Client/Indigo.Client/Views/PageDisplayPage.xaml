@@ -14,11 +14,7 @@
                     <Label Text="Last Edited: "/>
                     <Label Text="{Binding LastEdited}"/>
                 </StackLayout>
-                <WebView x:Name="markdownViewer" VerticalOptions="FillAndExpand">
-                    <WebView.Source>
-                        <HtmlWebViewSource Html="{Binding PageMessage, Converter={Helpers:MarkdownConverter}}"/>
-                    </WebView.Source>
-                </WebView>
+                <WebView x:Name="markdownViewer" VerticalOptions="FillAndExpand" Source="{Binding MarkdownView}"/>
                 <Editor x:Name="pageEditor" VerticalOptions="FillAndExpand" Keyboard="Chat" Text="{Binding PageMessage, Mode=TwoWay}" IsVisible="False"/>
             </StackLayout>
         </ScrollView>
