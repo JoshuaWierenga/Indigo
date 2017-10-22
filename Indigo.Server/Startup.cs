@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,16 +7,28 @@ using Indigo.Server.Models;
 
 namespace Indigo.Server
 {
+    /// <summary>
+    /// Handles setup of services and routes for use by the server 
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// This method gets called by the runtime. Stores copy of server configuration
+        /// </summary>
+        /// <param name="configuration">Server config to store</param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
+        /// <summary>
+        /// Server Configuration
+        /// </summary>
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to add services to the container.
+        /// </summary>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
@@ -29,7 +37,9 @@ namespace Indigo.Server
                     options.UseSqlServer(Configuration.GetConnectionString("IndigoContext")));
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// </summary>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())

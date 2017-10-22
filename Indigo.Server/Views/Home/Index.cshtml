@@ -16,35 +16,61 @@
 @section Scripts
  {
     <script>
+        //save copy of message before any changes have been made
         var oldmessage = $('#message').val();
+        //used to decide if or not to show save button
         var messageChanged = false;
 
+        //find sidebar
         var sidebar = $("#sidebar-wrapper").find("nav.sidebar-nav");
+
+        //add page's name to sidebar
         sidebar.append("<p class=\"text-center\">Page name: @Html.DisplayFor(model => model.Name)</p>");
+        //add page's last edit time to sidebar
         sidebar.append("<p class=\"text-center\">Last edited:<br/>" + 
             "@(Model.LastEdited != default(DateTime) ? Model.LastEdited.ToLocalTime().ToString("F") : "Never")</p>");
+        //add edit button to sidebar
         sidebar.append("<button id=\"editpage\" class=\"btn btn-default center-block\">Edit Page</button>");
+        //add blank line to sidebar
         sidebar.append("<br/>");
+        //add input requesting page to visit to sidebar
         sidebar.append("<input id=\"newpage\" class=\"form-control\" placeholder=\"goto page\"></input>");
+        //add button to goto page entered in input to sidebar
         sidebar.append("<button id=\"changepage\" class=\"btn btn-default center-block\">Goto</button>");
+
+        //check if on homepage
         if (window.location.pathname != "/") {
+            //add 2 blank lines to sidebar
             sidebar.append("<br/><br/>");
+            //add return to main page button to sidebar
             sidebar.append("<button id=\"rootpage\" class=\"btn btn-default center-block\">Return to main page</button>");
         }
 
+        //bind to clicking the change page button
         $("#changepage").click(function () {
+            //add value of new page input to url
             window.location.pathname = "home/" + $("#newpage").val();
         });
+        //bind to clicking the return to main page button
         $("#rootpage").click(function () {
+            //remove path from url
             window.location.pathname = "";
         });
+        //bind to clicking the edit page button
         $('#editpage').click(function () {
+            //remove the markdown div from the page
             $('#messagemarkdown').remove();
+            //show the message textarea and focus on it
             $('#message').css("display", "").focus();
+            //remove the edit page button from the page
             $(this).remove();
         });
+        //bind to clicking the save page button
         $(document).on("click", "#savepage", function () {
+            //get data from form tag
             var formdata = new FormData($('form').get(0));
+            //send edited page to the server
+            //reload page if page is accepted
             $.ajax({
                 url: "@Url.Action("Save", "Home")",
                 type: "POST",
@@ -57,6 +83,7 @@
             });           
         });
 
+        //bind to the message textarea changing
         $('#message').bind('input propertychange', function () {
             if (messageChanged == false) {
                 messageChanged = true;
