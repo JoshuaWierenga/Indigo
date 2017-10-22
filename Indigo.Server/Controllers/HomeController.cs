@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Indigo.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Text.RegularExpressions;
+using Markdig;
 
 namespace Indigo.Server.Controllers
 {
@@ -21,6 +23,8 @@ namespace Indigo.Server.Controllers
         {
             Page foundPage = pagename != null ? await GetPage(pagename) : await GetPage("home");
 
+            ViewData.Add("Markdown", Markdown.ToHtml(foundPage.Message ?? "", new MarkdownPipelineBuilder().UseAdvancedExtensions().Build()));
+
             return View(foundPage);
         }
 
@@ -31,6 +35,8 @@ namespace Indigo.Server.Controllers
             if (ModelState.IsValid)
             {
                 page.LastEdited = DateTime.UtcNow;
+                page.Message = Regex.Replace(page.Message, @"<[^>]+>|&nbsp;", "").Trim();
+
                 if (page.PageId == 0)
                 {
                     _context.Add(page);
@@ -53,12 +59,12 @@ namespace Indigo.Server.Controllers
                         {
                             throw;
                         }
-                    }   
+                    }
                 }
                 return Ok();
 
             }
-                
+
             return View(page);
         }
 

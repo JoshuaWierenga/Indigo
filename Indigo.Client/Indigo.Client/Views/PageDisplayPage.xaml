@@ -1,8 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:Helpers="clr-namespace:Indigo.Client.Helpers"
              x:Class="Indigo.Client.Views.PageDisplayPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Edit Page" Icon="ic_edit.png" Clicked="EditSave_Clicked"/>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
@@ -11,7 +13,8 @@
                     <Label Text="Last Edited: "/>
                     <Label Text="{Binding LastEdited}"/>
                 </StackLayout>
-                <Editor VerticalOptions="FillAndExpand" Keyboard="Chat" Text="{Binding PageMessage, Mode=TwoWay}" TextChanged="PageMessage_Changed"/>
+                <WebView x:Name="markdownViewer" VerticalOptions="FillAndExpand" Source="{Binding MarkdownView}"/>
+                <Editor x:Name="pageEditor" VerticalOptions="FillAndExpand" Keyboard="Chat" Text="{Binding PageMessage, Mode=TwoWay}" IsVisible="False"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

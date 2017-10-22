@@ -1,28 +1,20 @@
 ﻿using Indigo.Client.ViewModels;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using System;
 
 namespace Indigo.Client.Views
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class PageDisplayPage : ContentPage
-	{
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class PageDisplayPage : ContentPage
+    {
         PageViewModel viewModel;
-        ToolbarItem saveButton;
-        bool saveDisplayed;
 
-		public PageDisplayPage()
-		{
-			InitializeComponent();
+        public PageDisplayPage()
+        {
+            InitializeComponent();
 
             BindingContext = viewModel = new PageViewModel();
-            saveButton = new ToolbarItem("Save Changes", "ic_save.png", async () =>
-            {
-                await viewModel.SavePageAsync();
-                PageMessage_Changed(this, new TextChangedEventArgs("", viewModel.Page.Message));
-            });
-            saveDisplayed = false;
         }
 
         async void PageName_Changed(object sender, TextChangedEventArgs e)
@@ -31,17 +23,29 @@ namespace Indigo.Client.Views
             await viewModel.GetPageAsync(pageName);
         }
 
-        void PageMessage_Changed(object sender, TextChangedEventArgs e)
+        async void EditSave_Clicked(object sender, EventArgs e)
         {
-            if (viewModel.Page.Message != e.NewTextValue && !saveDisplayed)
+            ToolbarItem editSaveButton = (ToolbarItem)sender;
+
+            if (editSaveButton.Text == "Edit Page")
             {
-                saveDisplayed = true;
-                ToolbarItems.Add(saveButton);
+                editSaveButton.Text = "Save Changes";
+                editSaveButton.Icon = "ic_save.png";
+                markdownViewer.IsVisible = false;
+                pageEditor.IsVisible = true;
             }
-            else if (viewModel.Page.Message == e.NewTextValue && saveDisplayed)
+            else
             {
-                ToolbarItems.Remove(saveButton);
-                saveDisplayed = false;
+                if (viewModel.PageMessage != viewModel.Page.Message)
+                {
+                    await viewModel.SavePageAsync();
+                    await viewModel.GetPageAsync(viewModel.Page.Name);
+                }
+                
+                editSaveButton.Text = "Edit Page";
+                editSaveButton.Icon = "ic_edit.png";
+                markdownViewer.IsVisible = true;
+                pageEditor.IsVisible = false;                
             }
         }
 

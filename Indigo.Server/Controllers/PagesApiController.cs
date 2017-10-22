@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Indigo.Core.Models;
 using Indigo.Server.Models;
+using System.Text.RegularExpressions;
 
 namespace Indigo.Server.Controllers
 {
@@ -52,6 +53,7 @@ namespace Indigo.Server.Controllers
                 return BadRequest();
             }
 
+            page.Message = Regex.Replace(page.Message, @"<[^>]+>|&nbsp;", "").Trim();
             _context.Entry(page).State = EntityState.Modified;
 
             try
@@ -82,6 +84,7 @@ namespace Indigo.Server.Controllers
                 return BadRequest(ModelState);
             }
 
+            page.Message = Regex.Replace(page.Message, @"<[^>]+>|&nbsp;", "").Trim();
             _context.Pages.Add(page);
             await _context.SaveChangesAsync();
 
