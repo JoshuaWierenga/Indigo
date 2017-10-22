@@ -39,6 +39,7 @@ namespace Indigo.Client.Views
                 if (viewModel.PageMessage != viewModel.Page.Message)
                 {
                     await viewModel.SavePageAsync();
+                    await viewModel.GetPageAsync(viewModel.Page.Name);
                 }
                 
                 editSaveButton.Text = "Edit Page";

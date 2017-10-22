@@ -45,11 +45,6 @@ namespace Indigo.Client.ViewModels
             {
                 Name = "home"
             };
-
-            MarkdownView = new Xamarin.Forms.HtmlWebViewSource
-            {
-                Html = ""
-            };
         }
 
         public async Task GetPageAsync(string pagename)
