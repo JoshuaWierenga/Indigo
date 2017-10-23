@@ -22,7 +22,7 @@ namespace Indigo.Server
         /// Creates a new webhost setup for kestrel
         /// </summary>
         /// <param name="args">Arguments to be passed to webhost</param>
-        /// <returns></returns>
+        /// <returns>New webhost</returns>
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseKestrel()

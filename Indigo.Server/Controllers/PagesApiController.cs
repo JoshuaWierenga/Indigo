@@ -60,7 +60,7 @@ namespace Indigo.Server.Controllers
             return Ok(foundPage);
         }
 
-            /// <summary>
+        /// <summary>
         /// Handles put connections directed at /api/{pagename} with page in request body
         /// Attempts to update page in database if it is valid
         /// </summary>
@@ -115,7 +115,7 @@ namespace Indigo.Server.Controllers
         }
 
         /// <summary>
-        /// Handles post connections directed at /api/{pagename} with page in request body
+        /// Handles post connections directed at /api with page in request body
         /// Attempts to create page in database if it is valid
         /// </summary>
         /// <param name="page">Page to create in database</param>

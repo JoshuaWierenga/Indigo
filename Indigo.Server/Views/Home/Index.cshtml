@@ -85,13 +85,18 @@
 
         //bind to the message textarea changing
         $('#message').bind('input propertychange', function () {
-            if (messageChanged == false) {
+            //check if the text area no longer has the same text as when page was loaded
+            if (messageChanged == false) {  
                 messageChanged = true;
+                //add 2 blank lines to the sidebar
                 sidebar.append("<div id=\"savepadding\"><br/><br/></div>");
+                //add save page button to the sidebar
                 sidebar.append("<button id=\"savepage\" class=\"btn btn-default center-block\">Save Changes</button>");
             }
+            //text area now matches original again
             else if ($('#message').val() == oldmessage) {
                 messageChanged = false;
+                //remove padding and save button from sidebar
                 $("#savepadding").remove();
                 $("#savepage").remove();
             }

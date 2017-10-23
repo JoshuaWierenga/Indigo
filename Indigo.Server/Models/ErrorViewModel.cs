@@ -11,7 +11,7 @@ namespace Indigo.Server.Models
         public string RequestId { get; set; }
 
         /// <summary>
-        /// Gets if or not thhe string is set
+        /// Gets whether or not RequestId has a value
         /// </summary>
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
     }

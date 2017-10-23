@@ -1,14 +1,13 @@
 ﻿using Indigo.Client.Views;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace Indigo.Client
 {
+    /// <summary>
+    /// Handles creating application and displaying UI
+    /// </summary>
 	[XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class App : Application
     {
@@ -16,6 +15,7 @@ namespace Indigo.Client
         {
             InitializeComponent();
 
+            //Creates Page Viewer and displays within a navigation page so that toolbar is visible
             MainPage = new NavigationPage(new PageDisplayPage());
         }
 
