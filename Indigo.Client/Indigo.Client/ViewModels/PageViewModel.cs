@@ -98,7 +98,7 @@ namespace Indigo.Client.ViewModels
                 MarkdownView = new Xamarin.Forms.HtmlWebViewSource
                 {
                     //converts page message to html via markdown
-                    Html = Markdown.ToHtml(PageMessage, new MarkdownPipelineBuilder().UseAdvancedExtensions().Build())
+                    Html = Markdown.ToHtml(PageMessage, new MarkdownPipelineBuilder().UseAdvancedExtensions().UseEmojiAndSmiley().Build())
                 };
                 //shows last update time in view
                 LastEdited = foundPage.LastEdited.ToLocalTime().ToString("F");

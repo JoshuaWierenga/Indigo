@@ -42,7 +42,7 @@ namespace Indigo.Server.Controllers
             Page foundPage = pagename != null ? await GetPage(pagename) : await GetPage("home");
 
             //converts page message or blank string if it is null to markdown
-            string markdownMessage = Markdown.ToHtml(foundPage.Message ?? "", new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
+            string markdownMessage = Markdown.ToHtml(foundPage.Message ?? "", new MarkdownPipelineBuilder().UseAdvancedExtensions().UseEmojiAndSmiley().Build());
 
             //adds markdown converted message to viewdata to be used by view
             ViewData.Add("Markdown", markdownMessage);
