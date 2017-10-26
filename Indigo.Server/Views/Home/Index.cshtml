@@ -39,7 +39,7 @@
         sidebar.append("<button id=\"changepage\" class=\"btn btn-default center-block\">Goto</button>");
 
         //check if on homepage
-        if (window.location.pathname != "/") {
+        if (window.location.pathname !== "/") {
             //add 2 blank lines to sidebar
             sidebar.append("<br/><br/>");
             //add return to main page button to sidebar
@@ -86,7 +86,7 @@
         //bind to the message textarea changing
         $('#message').bind('input propertychange', function () {
             //check if the text area no longer has the same text as when page was loaded
-            if (messageChanged == false) {  
+            if (messageChanged === false) {  
                 messageChanged = true;
                 //add 2 blank lines to the sidebar
                 sidebar.append("<div id=\"savepadding\"><br/><br/></div>");
@@ -94,7 +94,7 @@
                 sidebar.append("<button id=\"savepage\" class=\"btn btn-default center-block\">Save Changes</button>");
             }
             //text area now matches original again
-            else if ($('#message').val() == oldmessage) {
+            else if ($('#message').val() === oldmessage) {
                 messageChanged = false;
                 //remove padding and save button from sidebar
                 $("#savepadding").remove();

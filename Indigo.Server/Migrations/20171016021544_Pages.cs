@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using System;
-using System.Collections.Generic;
 
 namespace Indigo.Server.Migrations
 {
@@ -10,14 +9,14 @@ namespace Indigo.Server.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Pages",
-                columns: table => new
+                "Pages",
+                table => new
                 {
-                    PageId = table.Column<int>(type: "int", nullable: false)
+                    PageId = table.Column<int>("int")
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    LastEdited = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    LastEdited = table.Column<DateTime>("datetime2"),
+                    Message = table.Column<string>("nvarchar(max)", nullable: true),
+                    Name = table.Column<string>("nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -28,7 +27,7 @@ namespace Indigo.Server.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Pages");
+                "Pages");
         }
     }
 }

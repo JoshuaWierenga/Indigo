@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using Indigo.Server.Models;
+using Indigo.Server.Data;
 
 namespace Indigo.Server
 {
@@ -57,13 +57,13 @@ namespace Indigo.Server
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    "default",
+                    "{controller=Home}/{action=Index}/{id?}");
 
                 routes.MapRoute(
-                    name: "page-route",
-                    template: "home/{*pagename}",
-                    defaults: new { controller = "Home", action = "Index" });
+                    "page-route",
+                    "home/{*pagename}",
+                    new { controller = "Home", action = "Index" });
             });
         }
     }

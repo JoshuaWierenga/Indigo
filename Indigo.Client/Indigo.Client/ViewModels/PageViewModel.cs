@@ -7,61 +7,62 @@ using System.Threading.Tasks;
 
 namespace Indigo.Client.ViewModels
 {
+    /// <inheritdoc />
     /// <summary>
     /// Contains the functions and variables used by the view
     /// </summary>
     public class PageViewModel : ObservableObject
     {
-        public ServerAccess server = new ServerAccess();
+        public ServerAccess Server = new ServerAccess();
 
-        Page _page;
+        private Page _page;
         /// <summary>
         /// Provides access to the page while alerting anything that is binded to the page whenever the page is updated    
         /// </summary>
         public Page Page
         {
-            get { return _page; }
-            set { SetProperty(ref _page, value); }
+            get => _page;
+            set => SetProperty(ref _page, value);
         }
 
-        string _PageMessage;
+        private string _pageMessage;
         /// <summary>
         /// Provides access to the message while alerting anything that is binded to the page whenever the page is updated    
         /// </summary>
         public string PageMessage
         {
-            get => _PageMessage;
-            set => SetProperty(ref _PageMessage, value);
+            get => _pageMessage;
+            set => SetProperty(ref _pageMessage, value);
         }
 
-        string _LastEdited;
+        private string _lastEdited;
         /// <summary>
         /// Provides access to the last edit time while alerting anything that is binded to the page whenever the page is updated    
         /// </summary>
         public string LastEdited
         {
-            get => _LastEdited;
-            set => SetProperty(ref _LastEdited, value);
+            get => _lastEdited;
+            set => SetProperty(ref _lastEdited, value);
         }
 
-        Xamarin.Forms.HtmlWebViewSource _MarkdownView;
+        private Xamarin.Forms.HtmlWebViewSource _markdownView;
         /// <summary>
         /// Provides access to the html code for the page while alerting anything that is binded to the page whenever the page is updated
         /// </summary>
         public Xamarin.Forms.HtmlWebViewSource MarkdownView
         {
-            get => _MarkdownView;
-            set => SetProperty(ref _MarkdownView, value);
+            get => _markdownView;
+            set => SetProperty(ref _markdownView, value);
         }
 
-        bool _Loading;
+        private bool _loading;
         /// <summary>
         /// Provides access to the loading state while alerting anything that is binded to the page whenever the page is updated    
         /// </summary>
         public bool Loading
         {
-            get => _Loading;
-            set => SetProperty(ref _Loading, value);
+            get => _loading;
+            set => SetProperty(ref _loading, value);
         }
 
         /// <summary>
@@ -85,8 +86,8 @@ namespace Indigo.Client.ViewModels
             Loading = true;
 
             //subscribe to connection issues
-            bool connectionError = false;
-            Xamarin.Forms.MessagingCenter.Subscribe<ServerAccess>(this, "httprequestexception", (sender) =>
+            var connectionError = false;
+            Xamarin.Forms.MessagingCenter.Subscribe<ServerAccess>(this, "httprequestexception", sender =>
             {
                 connectionError = true;
                 //sends message to the view that there was a httprequestexception
@@ -94,14 +95,14 @@ namespace Indigo.Client.ViewModels
             });
 
             //Gets page from server
-            Page foundPage = await server.GetPageAsync(pagename);
+            var foundPage = await Server.GetPageAsync(pagename);
 
             //keeps retrying until page can be retrieved from the server
             while (connectionError)
             {
                 connectionError = false;
                 //Gets page from server
-                foundPage = await server.GetPageAsync(pagename);
+                foundPage = await Server.GetPageAsync(pagename);
             }
             //unsubscribe to connection issues
             Xamarin.Forms.MessagingCenter.Unsubscribe<ServerAccess>(this, "httprequestexception");
@@ -146,7 +147,7 @@ namespace Indigo.Client.ViewModels
         public async Task SavePageAsync()
         {
             //Creates full page object from existing id, message, name and current time
-            Page currentPage = new Page
+            var currentPage = new Page
             {
                 PageId = Page.PageId,
                 Message = PageMessage,
@@ -158,12 +159,12 @@ namespace Indigo.Client.ViewModels
             if (LastEdited == "Never")
             {
                 //create page in database
-                await server.PostPageAsync(currentPage);
+                await Server.PostPageAsync(currentPage);
             }
             else
             {
                 //update page in database
-                await server.PutPageAsync(currentPage);
+                await Server.PutPageAsync(currentPage);
             }
 
             //updates last edit time

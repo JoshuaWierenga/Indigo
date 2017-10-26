@@ -14,7 +14,7 @@ namespace Indigo.Client.Rest
         /// <summary>
         /// Uses rest to create methods for IIndigoApi
         /// </summary>
-        IIndigoApi Api = RestService.For<IIndigoApi>("http://192.168.0.2");
+        private readonly IIndigoApi _api = RestService.For<IIndigoApi>("http://192.168.0.2");
 
         /// <summary>
         /// Requests page object from server
@@ -27,7 +27,7 @@ namespace Indigo.Client.Rest
             try
             {
                 //Sends request for page to server
-                return await Api.GetPageAsync(username);
+                return await _api.GetPageAsync(username);
             }
             catch (ApiException e)
             {
@@ -55,7 +55,7 @@ namespace Indigo.Client.Rest
         public async Task<Page> PostPageAsync(Page currentPage)
         {
             //Sends page to server
-            return await Api.PostPageAsync(currentPage);
+            return await _api.PostPageAsync(currentPage);
 
         }
 
@@ -65,7 +65,7 @@ namespace Indigo.Client.Rest
         /// <param name="currentPage">new version of page</param>
         public async Task PutPageAsync(Page currentPage)
         {
-            await Api.PutPageAsync(currentPage.Name, currentPage);
+            await _api.PutPageAsync(currentPage.Name, currentPage);
         }
     }
 }

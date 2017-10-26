@@ -1,15 +1,15 @@
 ﻿using Indigo.Client.Views;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace Indigo.Client
 {
+    /// <inheritdoc />
     /// <summary>
     /// Handles creating application and displaying UI
     /// </summary>
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class App : Application
+    public partial class App
     {
         public App()
         {

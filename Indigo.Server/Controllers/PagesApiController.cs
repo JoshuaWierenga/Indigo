@@ -3,11 +3,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Indigo.Core.Models;
-using Indigo.Server.Models;
 using System.Text.RegularExpressions;
+using Indigo.Server.Data;
 
 namespace Indigo.Server.Controllers
 {
+    /// <inheritdoc />
     /// <summary>
     /// Handles all connections directed at /api
     /// </summary>
@@ -104,10 +105,7 @@ namespace Indigo.Server.Controllers
                     //returns http status code 404
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
 
             //returns http status 204

@@ -1,22 +1,22 @@
 ﻿using Indigo.Client.ViewModels;
+using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using System;
-using Indigo.Client.Rest;
-using System.Threading.Tasks;
 
 namespace Indigo.Client.Views
 {
+    /// <inheritdoc />
     /// <summary>
     /// Handles displaying page to user and receiving user input
     /// </summary>
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class PageDisplayPage : ContentPage
+    public partial class PageDisplayPage
     {
         /// <summary>
         /// Provides access to view model which allows access to page and functions to get and save pages to the database
         /// </summary>
-        PageViewModel viewModel;
+        private readonly PageViewModel _viewModel;
 
         /// <summary>
         /// Creates UI and binds to viewModel
@@ -27,7 +27,7 @@ namespace Indigo.Client.Views
             InitializeComponent();
 
             //Creates ViewModel and binds UI to it
-            BindingContext = viewModel = new PageViewModel();
+            BindingContext = _viewModel = new PageViewModel();
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace Indigo.Client.Views
         /// </summary>
         /// <param name="sender">Object that called this function</param>
         /// <param name="e">Infomation about text being changed</param>
-        async void PageName_Changed(object sender, TextChangedEventArgs e)
+        private async void PageName_Changed(object sender, TextChangedEventArgs e)
         {
             //check if page name is blank, if it is use home instead
             string pageName = e.NewTextValue != "" ? e.NewTextValue : "home";
@@ -50,52 +50,50 @@ namespace Indigo.Client.Views
         /// </summary>
         /// <param name="sender">Object that called this function</param>
         /// <param name="e">Infomation about button being clicked</param>
-        async void EditSave_Clicked(object sender, EventArgs e)
+        private async void EditSave_Clicked(object sender, EventArgs e)
         {
             //only allow editing or saving if not loading
-            if (!viewModel.Loading)
-            {
-                //Get the toolbar button that caused this event
-                ToolbarItem editSaveButton = (ToolbarItem)sender;
+            if (_viewModel.Loading) return;
+            //Get the toolbar button that caused this event
+            var editSaveButton = (ToolbarItem)sender;
 
-                //check if edit button was pressed
-                if (editSaveButton.Text == "Edit Page")
+            //check if edit button was pressed
+            if (editSaveButton.Text == "Edit Page")
+            {
+                //switch to save button
+                editSaveButton.Text = "Save Changes";
+                editSaveButton.Icon = "ic_save.png";
+                //switch from markdown viewer to message editor
+                MarkdownViewer.IsVisible = false;
+                PageEditor.IsVisible = true;
+            }
+            else
+            {
+                //check if message has been changed
+                if (_viewModel.PageMessage != _viewModel.Page.Message)
                 {
-                    //switch to save button
-                    editSaveButton.Text = "Save Changes";
-                    editSaveButton.Icon = "ic_save.png";
-                    //switch from markdown viewer to message editor
-                    markdownViewer.IsVisible = false;
-                    pageEditor.IsVisible = true;
+                    //saves message to database and update viewmodel
+                    await _viewModel.SavePageAsync();
+                    await AttemptGetPage(_viewModel.Page.Name);
                 }
-                else
-                {
-                    //check if message has been changed
-                    if (viewModel.PageMessage != viewModel.Page.Message)
-                    {
-                        //saves message to database and update viewmodel
-                        await viewModel.SavePageAsync();
-                        await AttemptGetPage(viewModel.Page.Name);
-                    }
-                    //switch to edit button
-                    editSaveButton.Text = "Edit Page";
-                    editSaveButton.Icon = "ic_edit.png";
-                    //switch from message editor to markdown viewer
-                    markdownViewer.IsVisible = true;
-                    pageEditor.IsVisible = false;
-                }
-            }           
+                //switch to edit button
+                editSaveButton.Text = "Edit Page";
+                editSaveButton.Icon = "ic_edit.png";
+                //switch from message editor to markdown viewer
+                MarkdownViewer.IsVisible = true;
+                PageEditor.IsVisible = false;
+            }
         }
 
         /// <summary>
         /// Attempts to get page from server, if there are 10 failures then the user is alerted
         /// </summary>
         /// <param name="pagename">name of page to retrieve</param>
-        async Task AttemptGetPage(string pagename)
+        private async Task AttemptGetPage(string pagename)
         {
             //subscribe to connection issues
-            int errorCount = 0;
-            MessagingCenter.Subscribe<PageViewModel>(this, "connection error", (sender) =>
+            var errorCount = 0;
+            MessagingCenter.Subscribe<PageViewModel>(this, "connection error", sender =>
             {            
                 //display error after 10 attempts
                 if (errorCount < 10)
@@ -111,11 +109,12 @@ namespace Indigo.Client.Views
             });
 
             //gets home page from database
-            await viewModel.GetPageAsync(pagename);
+            await _viewModel.GetPageAsync(pagename);
             //unsubscribe to connection issues
             MessagingCenter.Unsubscribe<PageViewModel>(this, "connection error");
         }
         
+        /// <inheritdoc />
         /// <summary>
         /// Runs on page appearing, gets home page from database
         /// </summary>

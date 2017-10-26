@@ -1,18 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Indigo.Core.Models;
+﻿using Indigo.Core.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace Indigo.Server.Models
+namespace Indigo.Server.Data
 {
+    /// <inheritdoc />
     /// <summary>
     /// Database context to hold database model
     /// </summary>
     public class IndigoContext : DbContext
     {
+        /// <inheritdoc />
         /// <summary>
         /// Creates DbContext with options
         /// </summary>
         /// <param name="options"></param>
-        public IndigoContext (DbContextOptions<IndigoContext> options)
+        public IndigoContext (DbContextOptions options)
             : base(options)
         {
         }

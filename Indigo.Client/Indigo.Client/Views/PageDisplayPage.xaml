@@ -9,13 +9,13 @@
         <Grid>
             <ScrollView>
                 <StackLayout>
-                    <Entry HorizontalOptions="CenterAndExpand" Placeholder="Enter page name here" Text="{Binding Page.Name, Mode=OneWayToSource}" TextChanged="PageName_Changed"/>
+                    <Entry x:Name="NameEntry" HorizontalOptions="CenterAndExpand" Placeholder="Enter page name here" Text="{Binding Page.Name, Mode=OneWayToSource}" TextChanged="PageName_Changed"/>
                     <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
                         <Label Text="Last Edited: "/>
                         <Label Text="{Binding LastEdited}"/>
                     </StackLayout>
-                    <WebView x:Name="markdownViewer" VerticalOptions="FillAndExpand" Source="{Binding MarkdownView}"/>
-                    <Editor x:Name="pageEditor" VerticalOptions="FillAndExpand" Keyboard="Chat" Text="{Binding PageMessage, Mode=TwoWay}" IsVisible="False"/>
+                    <WebView x:Name="MarkdownViewer" VerticalOptions="FillAndExpand" Source="{Binding MarkdownView}"/>
+                    <Editor x:Name="PageEditor" VerticalOptions="FillAndExpand" Keyboard="Chat" Text="{Binding PageMessage, Mode=TwoWay}" IsVisible="False"/>
                 </StackLayout>
             </ScrollView>
             <ContentView IsVisible="{Binding Loading}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
