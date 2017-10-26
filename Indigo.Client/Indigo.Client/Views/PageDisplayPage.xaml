@@ -6,16 +6,21 @@
         <ToolbarItem Text="Edit Page" Icon="ic_edit.png" Clicked="EditSave_Clicked"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <ScrollView>
-            <StackLayout>
-                <Entry HorizontalOptions="CenterAndExpand" Placeholder="Enter page name here" Text="{Binding Page.Name, Mode=OneWayToSource}" TextChanged="PageName_Changed"/>
-                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
-                    <Label Text="Last Edited: "/>
-                    <Label Text="{Binding LastEdited}"/>
+        <Grid>
+            <ScrollView>
+                <StackLayout>
+                    <Entry HorizontalOptions="CenterAndExpand" Placeholder="Enter page name here" Text="{Binding Page.Name, Mode=OneWayToSource}" TextChanged="PageName_Changed"/>
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                        <Label Text="Last Edited: "/>
+                        <Label Text="{Binding LastEdited}"/>
+                    </StackLayout>
+                    <WebView x:Name="markdownViewer" VerticalOptions="FillAndExpand" Source="{Binding MarkdownView}"/>
+                    <Editor x:Name="pageEditor" VerticalOptions="FillAndExpand" Keyboard="Chat" Text="{Binding PageMessage, Mode=TwoWay}" IsVisible="False"/>
                 </StackLayout>
-                <WebView x:Name="markdownViewer" VerticalOptions="FillAndExpand" Source="{Binding MarkdownView}"/>
-                <Editor x:Name="pageEditor" VerticalOptions="FillAndExpand" Keyboard="Chat" Text="{Binding PageMessage, Mode=TwoWay}" IsVisible="False"/>
-            </StackLayout>
-        </ScrollView>
+            </ScrollView>
+            <ContentView IsVisible="{Binding Loading}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                <ActivityIndicator IsRunning="True"/>
+            </ContentView>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

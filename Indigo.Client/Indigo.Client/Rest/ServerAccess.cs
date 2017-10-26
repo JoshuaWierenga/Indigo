@@ -1,7 +1,7 @@
 ﻿using Indigo.Core.Models;
 using Refit;
-using System;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Indigo.Client.Rest
@@ -38,6 +38,12 @@ namespace Indigo.Client.Rest
                 }
 
                 throw;
+            }
+            catch (HttpRequestException)
+            {
+                //sends message to the viewmodel that there was a httprequestexception
+                Xamarin.Forms.MessagingCenter.Send(this, "httprequestexception");
+                return null;
             }
         }
 

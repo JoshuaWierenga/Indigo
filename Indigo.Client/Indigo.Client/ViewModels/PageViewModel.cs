@@ -54,6 +54,16 @@ namespace Indigo.Client.ViewModels
             set => SetProperty(ref _MarkdownView, value);
         }
 
+        bool _Loading;
+        /// <summary>
+        /// Provides access to the loading state while alerting anything that is binded to the page whenever the page is updated    
+        /// </summary>
+        public bool Loading
+        {
+            get => _Loading;
+            set => SetProperty(ref _Loading, value);
+        }
+
         /// <summary>
         /// Sets page to home page
         /// </summary>
@@ -72,8 +82,29 @@ namespace Indigo.Client.ViewModels
         /// <param name="pagename">name of page to retrieve</param>
         public async Task GetPageAsync(string pagename)
         {
+            Loading = true;
+
+            //subscribe to connection issues
+            bool connectionError = false;
+            Xamarin.Forms.MessagingCenter.Subscribe<ServerAccess>(this, "httprequestexception", (sender) =>
+            {
+                connectionError = true;
+                //sends message to the view that there was a httprequestexception
+                Xamarin.Forms.MessagingCenter.Send(this, "connection error");
+            });
+
             //Gets page from server
             Page foundPage = await server.GetPageAsync(pagename);
+
+            //keeps retrying until page can be retrieved from the server
+            while (connectionError)
+            {
+                connectionError = false;
+                //Gets page from server
+                foundPage = await server.GetPageAsync(pagename);
+            }
+            //unsubscribe to connection issues
+            Xamarin.Forms.MessagingCenter.Unsubscribe<ServerAccess>(this, "httprequestexception");
 
             //check if page exists
             if (foundPage == null)
@@ -106,6 +137,7 @@ namespace Indigo.Client.ViewModels
                 Page.PageId = foundPage.PageId;
             }
             Page.Name = pagename;
+            Loading = false;
         }
 
         /// <summary>

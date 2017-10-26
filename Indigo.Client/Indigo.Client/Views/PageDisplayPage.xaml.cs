@@ -2,6 +2,8 @@
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System;
+using Indigo.Client.Rest;
+using System.Threading.Tasks;
 
 namespace Indigo.Client.Views
 {
@@ -38,7 +40,7 @@ namespace Indigo.Client.Views
             //check if page name is blank, if it is use home instead
             string pageName = e.NewTextValue != "" ? e.NewTextValue : "home";
             //gets page from database
-            await viewModel.GetPageAsync(pageName);
+            await AttemptGetPage(pageName);
         }
         
         /// <summary>
@@ -50,45 +52,78 @@ namespace Indigo.Client.Views
         /// <param name="e">Infomation about button being clicked</param>
         async void EditSave_Clicked(object sender, EventArgs e)
         {
-            //Get the toolbar button that caused this event
-            ToolbarItem editSaveButton = (ToolbarItem)sender;
+            //only allow editing or saving if not loading
+            if (!viewModel.Loading)
+            {
+                //Get the toolbar button that caused this event
+                ToolbarItem editSaveButton = (ToolbarItem)sender;
 
-            //check if edit button was pressed
-            if (editSaveButton.Text == "Edit Page")
-            {
-                //switch to save button
-                editSaveButton.Text = "Save Changes";
-                editSaveButton.Icon = "ic_save.png";
-                //switch from markdown viewer to message editor
-                markdownViewer.IsVisible = false;
-                pageEditor.IsVisible = true;
-            }
-            else
-            {
-                //check if message has been changed
-                if (viewModel.PageMessage != viewModel.Page.Message)
+                //check if edit button was pressed
+                if (editSaveButton.Text == "Edit Page")
                 {
-                    //saves message to database and update viewmodel
-                    await viewModel.SavePageAsync();
-                    await viewModel.GetPageAsync(viewModel.Page.Name);
+                    //switch to save button
+                    editSaveButton.Text = "Save Changes";
+                    editSaveButton.Icon = "ic_save.png";
+                    //switch from markdown viewer to message editor
+                    markdownViewer.IsVisible = false;
+                    pageEditor.IsVisible = true;
                 }
-                //switch to edit button
-                editSaveButton.Text = "Edit Page";
-                editSaveButton.Icon = "ic_edit.png";
-                //switch from message editor to markdown viewer
-                markdownViewer.IsVisible = true;
-                pageEditor.IsVisible = false;                
-            }
+                else
+                {
+                    //check if message has been changed
+                    if (viewModel.PageMessage != viewModel.Page.Message)
+                    {
+                        //saves message to database and update viewmodel
+                        await viewModel.SavePageAsync();
+                        await AttemptGetPage(viewModel.Page.Name);
+                    }
+                    //switch to edit button
+                    editSaveButton.Text = "Edit Page";
+                    editSaveButton.Icon = "ic_edit.png";
+                    //switch from message editor to markdown viewer
+                    markdownViewer.IsVisible = true;
+                    pageEditor.IsVisible = false;
+                }
+            }           
         }
 
+        /// <summary>
+        /// Attempts to get page from server, if there are 10 failures then the user is alerted
+        /// </summary>
+        /// <param name="pagename">name of page to retrieve</param>
+        async Task AttemptGetPage(string pagename)
+        {
+            //subscribe to connection issues
+            int errorCount = 0;
+            MessagingCenter.Subscribe<PageViewModel>(this, "connection error", (sender) =>
+            {            
+                //display error after 10 attempts
+                if (errorCount < 10)
+                {
+                    errorCount++;
+                }
+                else if (errorCount == 10)
+                {
+                    errorCount++;
+                    //alert user that there was a connection issue
+                    DisplayAlert("Warning", "No connection to the server could be established, make sure you are connected to the internet", "ok");
+                }               
+            });
+
+            //gets home page from database
+            await viewModel.GetPageAsync(pagename);
+            //unsubscribe to connection issues
+            MessagingCenter.Unsubscribe<PageViewModel>(this, "connection error");
+        }
+        
         /// <summary>
         /// Runs on page appearing, gets home page from database
         /// </summary>
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            //gets home page from database
-            await viewModel.GetPageAsync("home");
+
+            await AttemptGetPage("home");        
         }
     }
 }
