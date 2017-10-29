@@ -86,21 +86,18 @@ namespace Indigo.Client.ViewModels
             Loading = true;
 
             //subscribe to connection issues
-            var connectionError = false;
+            var retry = true;
             Xamarin.Forms.MessagingCenter.Subscribe<ServerAccess>(this, "httprequestexception", sender =>
             {
-                connectionError = true;
-                //sends message to the view that there was a httprequestexception
-                Xamarin.Forms.MessagingCenter.Send(this, "connection error");
+                retry = true;
             });
 
-            //Gets page from server
-            var foundPage = await Server.GetPageAsync(pagename);
+            Page foundPage = null;
 
             //keeps retrying until page can be retrieved from the server
-            while (connectionError)
+            while (retry)
             {
-                connectionError = false;
+                retry = false;
                 //Gets page from server
                 foundPage = await Server.GetPageAsync(pagename);
             }
@@ -146,6 +143,8 @@ namespace Indigo.Client.ViewModels
         /// </summary>
         public async Task SavePageAsync()
         {
+            Loading = true;
+
             //Creates full page object from existing id, message, name and current time
             var currentPage = new Page
             {
@@ -155,17 +154,33 @@ namespace Indigo.Client.ViewModels
                 Name = Page.Name
             };
 
-            //check if page is new
-            if (LastEdited == "Never")
+            //subscribe to connection issues
+            var retry = false;
+            Xamarin.Forms.MessagingCenter.Subscribe<ServerAccess>(this, "httprequestexception", sender =>
             {
-                //create page in database
-                await Server.PostPageAsync(currentPage);
-            }
-            else
+                retry = true;
+            });
+
+            //keep retrying until page can be sent to server
+            while (retry)
             {
-                //update page in database
-                await Server.PutPageAsync(currentPage);
+                retry = false;
+
+                //check if page is new
+                if (LastEdited == "Never")
+                {
+                    //create page in database
+                    await Server.PostPageAsync(currentPage);
+                }
+                else
+                {
+                    //update page in database
+                    await Server.PutPageAsync(currentPage);
+                }
             }
+
+            //unsubscribe to connection issues
+            Xamarin.Forms.MessagingCenter.Unsubscribe<ServerAccess>(this, "httprequestexception");
 
             //updates last edit time
             LastEdited = currentPage.LastEdited.ToLocalTime().ToString("F");

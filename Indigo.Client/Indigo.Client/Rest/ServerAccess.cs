@@ -14,7 +14,7 @@ namespace Indigo.Client.Rest
         /// <summary>
         /// Uses rest to create methods for IIndigoApi
         /// </summary>
-        private readonly IIndigoApi _api = RestService.For<IIndigoApi>("http://192.168.0.2");
+        private readonly IIndigoApi _api = RestService.For<IIndigoApi>("http://localhost:5000");
 
         /// <summary>
         /// Requests page object from server
@@ -54,9 +54,18 @@ namespace Indigo.Client.Rest
         /// <returns>Full page object</returns>
         public async Task<Page> PostPageAsync(Page currentPage)
         {
-            //Sends page to server
-            return await _api.PostPageAsync(currentPage);
-
+            //Attempts to send page to server
+            try
+            {
+                //Sends page to server
+                return await _api.PostPageAsync(currentPage);
+            }
+            catch (HttpRequestException)
+            {
+                //sends message to the viewmodel that there was a httprequestexception
+                Xamarin.Forms.MessagingCenter.Send(this, "httprequestexception");
+                return null;
+            }
         }
 
         /// <summary>
@@ -65,7 +74,17 @@ namespace Indigo.Client.Rest
         /// <param name="currentPage">new version of page</param>
         public async Task PutPageAsync(Page currentPage)
         {
-            await _api.PutPageAsync(currentPage.Name, currentPage);
+            //Attempts to send page to server
+            try
+            {
+                //Sends page to server
+                await _api.PutPageAsync(currentPage.Name, currentPage);
+            }
+            catch (HttpRequestException)
+            {
+                //sends message to the viewmodel that there was a httprequestexception
+                Xamarin.Forms.MessagingCenter.Send(this, "httprequestexception");
+            }          
         }
     }
 }

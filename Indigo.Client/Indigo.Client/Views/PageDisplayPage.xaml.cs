@@ -1,4 +1,5 @@
-﻿using Indigo.Client.ViewModels;
+﻿using Indigo.Client.Rest;
+using Indigo.Client.ViewModels;
 using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -73,7 +74,7 @@ namespace Indigo.Client.Views
                 if (_viewModel.PageMessage != _viewModel.Page.Message)
                 {
                     //saves message to database and update viewmodel
-                    await _viewModel.SavePageAsync();
+                    await AttemptSavePage();
                     await AttemptGetPage(_viewModel.Page.Name);
                 }
                 //switch to edit button
@@ -93,7 +94,7 @@ namespace Indigo.Client.Views
         {
             //subscribe to connection issues
             var errorCount = 0;
-            MessagingCenter.Subscribe<PageViewModel>(this, "connection error", sender =>
+            MessagingCenter.Subscribe<ServerAccess>(this, "httprequestexception", sender =>
             {            
                 //display error after 10 attempts
                 if (errorCount < 10)
@@ -111,9 +112,38 @@ namespace Indigo.Client.Views
             //gets home page from database
             await _viewModel.GetPageAsync(pagename);
             //unsubscribe to connection issues
-            MessagingCenter.Unsubscribe<PageViewModel>(this, "connection error");
+            MessagingCenter.Unsubscribe<PageViewModel>(this, "httprequestexception");
         }
-        
+
+        /// <summary>
+        /// Attempts to save current page to the server, if there are 10 failures then the user is alerted
+        /// </summary>
+        private async Task AttemptSavePage()
+        {
+            //subscribe to connection issues
+            var errorCount = 0;
+            MessagingCenter.Subscribe<ServerAccess>(this, "httprequestexception", sender =>
+            {
+                //display error after 10 attempts
+                if (errorCount < 10)
+                {
+                    errorCount++;
+                }
+                else if (errorCount == 10)
+                {
+                    errorCount++;
+                    //alert user that there was a connection issue
+                    DisplayAlert("Warning", "No connection to the server could be established, make sure you are connected to the internet", "ok");
+                }
+            });
+
+            //saves page to database
+            await _viewModel.SavePageAsync();
+            //unsubscribe to connection issues
+            MessagingCenter.Unsubscribe<PageViewModel>(this, "httprequestexception");
+
+        }
+
         /// <inheritdoc />
         /// <summary>
         /// Runs on page appearing, gets home page from database
