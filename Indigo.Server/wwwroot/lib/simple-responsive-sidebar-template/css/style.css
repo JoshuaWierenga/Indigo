@@ -1,0 +1,259 @@
+/*!
+ * Simple Sidebar HTML Template
+ * Code licensed under the Apache License v2.0.
+ * For details, see http://www.apache.org/licenses/LICENSE-2.0.
+ */
+
+/* Toggle Styles */
+
+* {
+  margin: 0;
+}
+
+html,body {
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+html, html a {
+  text-rendering: optimizeLegibility !important;
+  -webkit-font-smoothing: antialiased;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.004);
+}
+
+#wrapper {
+    min-height: 100%;
+    position: relative;
+    height: 100%;
+    padding-left: 0;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#wrapper.toggled {
+    padding-left: 220px;
+}
+
+#sidebar-wrapper {
+    z-index: 1000;
+    position: fixed;
+    left: 220px;
+    width: 0;
+    height: 100%;
+    margin-left: -220px;
+    overflow-x: hidden; 
+    overflow-y: hidden;
+    background: #EEF0F0;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    color: #343434;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    width: 220px;
+}
+
+#page-content-wrapper {
+    background: #FFFFFF;
+    position: relative;
+    width: 100%;
+    min-height: 100% !important;
+    color: #343434;
+}
+
+#content-area {
+    padding-top: 10px;
+}
+
+.container-fluid {
+    padding-left: 55px;
+    padding-top: 40px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    position: absolute;
+    margin-right: -220px;
+}
+
+/* Sidebar Styles */
+
+.sidebar-nav {
+    position: absolute;
+    top: 0;
+    width: 220px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-right: 1px solid #CBD4D7;
+    height: 100%;
+    overflow:auto;
+}
+
+.sidebar-nav li {
+    text-indent: 10px;
+    line-height: 40px;
+    width: 220px;
+}
+
+.sidebar-nav li:hover{
+    border-left: solid 4px #06A77D;
+    padding-left: 4px;
+    background-color: #FFFFFF;
+    -webkit-transition: all 0.15s ease-in;
+    -moz-transition: all 0.15s ease-in;
+    -o-transition: all 0.15s ease-in;
+}
+
+.sidebar-nav li:active,
+.sidebar-nav li:focus {
+    border-left: solid 4px #06A77D;
+    padding-left: 4px;
+    background-color: #FFFFFF;
+}
+
+.sidebar-nav li a {
+    display: block;
+    text-decoration: none;
+    color: #343434; 
+}
+
+.sidebar-nav li a:hover {
+    height: 100%;
+}
+
+.sidebar-nav > .sidebar-brand {
+    height: 140px;
+    margin: 20px 0px 20px 40px;
+}
+
+.sidebar-nav > .sidebar-brand a:hover {
+    color: #06A77D;
+    background: none;
+}
+
+.sidebar-nav li a:hover .fa,
+.sidebar-nav li a:active .fa,
+.sidebar-nav li a:focus .fa {
+    color: #06A77D;
+    -webkit-transition: all 0.15s ease-in;
+    -moz-transition: all 0.15s ease-in;
+    -o-transition: all 0.15s ease-in;
+}
+
+.sidebar-nav img {
+    border-radius: 50%;
+}
+
+#hamburger-wrapper {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 50px;
+    min-height: 45px;
+    position: fixed;
+    background-color: #CBD4D7;
+    z-index: 2;
+    transition: background-color 0.3s ease;
+    -webkit-border-radius: 0px 0px 10px 0px; 
+    -moz-border-radius: 0px 0px 10px 0px; 
+    bottom-left-border-radius: 0px 0px 10px 0px;
+    border-bottom-right-radius: 10px;
+}
+
+#hamburger-wrapper:hover {
+    background-color: #484848;
+}
+
+#hamburger {
+    font-size: .7em;
+    text-align: center;
+    white-space: nowrap;
+    width: 60%;
+    height: 60%;
+    overflow: visible;
+    z-index: 3;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    min-width: 50px;
+}
+
+.fa-bars {
+    color: #fff;
+    font-size: 3em;
+}
+
+.login-name{
+    min-width: 220px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.login-name a {
+    color: #343434;
+    text-decoration: none;
+    font-size: .9em;
+}
+
+.login-name a:hover {
+    color: #06A77D;
+    -webkit-transition: all 0.15s ease-in;
+    -moz-transition: all 0.15s ease-in;
+    -o-transition: all 0.15s ease-in;
+}
+
+#footer-wrapper {
+    min-width: 220px;
+    height: 50px;
+    position: absolute;
+    bottom:0;
+    left:0;
+    background: #06A77D;
+    overflow: hidden;
+}
+
+footer {
+    color: #fff;
+    font-size: .7em;
+    text-align: center;
+    white-space: nowrap;
+    width: 60%;
+    height: 50%;
+    overflow: visible;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    min-width: 220px;
+}
+
+@media(min-width:768px) {
+    #wrapper {
+        padding-left: 220px;
+    }
+
+    #wrapper.toggled {
+        padding-left: 0;
+    }
+
+    #sidebar-wrapper {
+        width: 220px;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        width: 0;
+    }
+
+    #page-content-wrapper {
+        padding: 20px;
+    }
+
+    #wrapper.toggled #page-content-wrapper {
+        position: relative;
+        margin-right: 0;
+    }
+}

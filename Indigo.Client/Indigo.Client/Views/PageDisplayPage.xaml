@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Indigo.Client.Views.PageDisplayPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Edit Page" Icon="ic_edit.png" Clicked="EditSave_Clicked"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <Grid>
+            <ScrollView>
+                <StackLayout>
+                    <Entry x:Name="NameEntry" HorizontalOptions="CenterAndExpand" Placeholder="Enter page name here" Text="{Binding Page.Name, Mode=OneWayToSource}" TextChanged="PageName_Changed"/>
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                        <Label Text="Last Edited: "/>
+                        <Label Text="{Binding LastEdited}"/>
+                    </StackLayout>
+                    <WebView x:Name="MarkdownViewer" VerticalOptions="FillAndExpand" Source="{Binding MarkdownView}"/>
+                    <Editor x:Name="PageEditor" VerticalOptions="FillAndExpand" Keyboard="Chat" Text="{Binding PageMessage, Mode=TwoWay}" IsVisible="False"/>
+                </StackLayout>
+            </ScrollView>
+            <ContentView IsVisible="{Binding Loading}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                <ActivityIndicator IsRunning="True"/>
+            </ContentView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

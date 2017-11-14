@@ -1,11 +1,12 @@
-﻿@using Microsoft.AspNetCore.Http;
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Indigo</title>
+    <title>@ViewData["Title"] - Indigo.Server</title>
 
+    <link rel="stylesheet" href="~/lib/simple-responsive-sidebar-template/css/style.css" />
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
@@ -18,38 +19,43 @@
     </environment>
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Indigo</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Users" asp-action="Index">Users</a></li>                    
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        @if (Context.Session.GetString("CurrentUser") != null)
-                        {
-                            <a asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
-                        }
-                    </li>
-                </ul>
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <nav class="sidebar-nav">
+                <div class="sidebar-brand">
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="sidebar-brand">
+                        <img src="http://placehold.it/140x140" alt="Placeholder image, gray circle with 140 x 140 in the middle">
+                    </a>
+                </div>
+            </nav>
+            <div id="footer-wrapper" class="hidden-xs">
+                <footer>
+                    Indigo
+                    <br/>
+                    Joshua Wierenga
+                </footer>
             </div>
         </div>
-    </nav>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>2017 - Indigo</p>
-        </footer>
+        <!-- /#sidebar-wrapper -->
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div id="hamburger-wrapper" class="visible-xs">
+                <div id="hamburger">
+                    <a href="#menu-toggle" id="menu-toggle">
+                        <i class="fa fa-bars" style="font-size: 3em"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div id="content-area">
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
     </div>
 
     <environment include="Development">
@@ -73,6 +79,7 @@
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
 
-    @RenderSection("Scripts", required: false)
+
+    @RenderSection("Scripts", false)
 </body>
 </html>

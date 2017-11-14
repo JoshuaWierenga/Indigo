@@ -1,41 +1,105 @@
-﻿@using Microsoft.AspNetCore.Http;
-@model IEnumerable<Indigo.Core.Models.UserConversation>
+﻿@model Indigo.Core.Models.Page
 
 @{
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = "Index";
 }
 
-<h2>Conversations</h2>
+<form asp-action="Index">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="PageId" />
+    <input type="hidden" asp-for="Name" />
+    <div id="messagemarkdown">@Html.Raw(ViewData["Markdown"])</div>
+    <textarea asp-for="Message" id="message" style="width: 100%; height: calc(100vh - 67px); border: none; resize: none; display: none"></textarea>
+    <input type="hidden" asp-for="LastEdited" />
+</form>
 
-<p>
-    <a asp-action="CreateConversation">Create Conversation</a>
-</p>
+@section Scripts
+ {
+    <script>
+        //save copy of message before any changes have been made
+        var oldmessage = $('#message').val();
+        //used to decide if or not to show save button
+        var messageChanged = false;
 
-<table class="table">
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Conversation.ConversationName)
-                <br/> 
-                @(item.Conversation.isGroupChat ? "Group Chat" : "Private Chat")
-                with
-                @(item.Conversation.UserConversations.SingleOrDefault(uc => uc.User.UserId != Context.Session.GetInt32("CurrentUser")).User.Username)
-            </td>
-            <td>
-                <a asp-action="AccessConversation" asp-route-id="@item.ConversationId">Access</a> |
-                @{
-                    if (!item.Conversation.isGroupChat)
-                    {
-                        <a asp-action="DeleteConversation" asp-route-id="@item.ConversationId">Delete</a>
-                    }
-                    else
-                    {
-                        <a asp-action="LeaveConversation" asp-route-id="@item.ConversationId">Leave</a>
-                    }
-                }            
-            </td>
-        </tr>
+        //find sidebar
+        var sidebar = $("#sidebar-wrapper").find("nav.sidebar-nav");
+
+        //add page's name to sidebar
+        sidebar.append("<p class=\"text-center\">Page name: @Html.DisplayFor(model => model.Name)</p>");
+        //add page's last edit time to sidebar
+        sidebar.append("<p class=\"text-center\">Last edited:<br/>" + 
+            "@(Model.LastEdited != default(DateTime) ? Model.LastEdited.ToLocalTime().ToString("F") : "Never")</p>");
+        //add edit button to sidebar
+        sidebar.append("<button id=\"editpage\" class=\"btn btn-default center-block\">Edit Page</button>");
+        //add blank line to sidebar
+        sidebar.append("<br/>");
+        //add input requesting page to visit to sidebar
+        sidebar.append("<input id=\"newpage\" class=\"form-control\" placeholder=\"goto page\"></input>");
+        //add button to goto page entered in input to sidebar
+        sidebar.append("<button id=\"changepage\" class=\"btn btn-default center-block\">Goto</button>");
+
+        //check if on homepage
+        if (window.location.pathname !== "/") {
+            //add 2 blank lines to sidebar
+            sidebar.append("<br/><br/>");
+            //add return to main page button to sidebar
+            sidebar.append("<button id=\"rootpage\" class=\"btn btn-default center-block\">Return to main page</button>");
+        }
+
+        //bind to clicking the change page button
+        $("#changepage").click(function () {
+            //add value of new page input to url
+            window.location.pathname = "home/" + $("#newpage").val();
+        });
+        //bind to clicking the return to main page button
+        $("#rootpage").click(function () {
+            //remove path from url
+            window.location.pathname = "";
+        });
+        //bind to clicking the edit page button
+        $('#editpage').click(function () {
+            //remove the markdown div from the page
+            $('#messagemarkdown').remove();
+            //show the message textarea and focus on it
+            $('#message').css("display", "").focus();
+            //remove the edit page button from the page
+            $(this).remove();
+        });
+        //bind to clicking the save page button
+        $(document).on("click", "#savepage", function () {
+            //get data from form tag
+            var formdata = new FormData($('form').get(0));
+            //send edited page to the server
+            //reload page if page is accepted
+            $.ajax({
+                url: "@Url.Action("Save", "Home")",
+                type: "POST",
+                data: formdata,
+                processData: false,
+                contentType: false,
+                success: function() {
+                    location.reload();
+                }
+            });           
+        });
+
+        //bind to the message textarea changing
+        $('#message').bind('input propertychange', function () {
+            //check if the text area no longer has the same text as when page was loaded
+            if (messageChanged === false) {  
+                messageChanged = true;
+                //add 2 blank lines to the sidebar
+                sidebar.append("<div id=\"savepadding\"><br/><br/></div>");
+                //add save page button to the sidebar
+                sidebar.append("<button id=\"savepage\" class=\"btn btn-default center-block\">Save Changes</button>");
+            }
+            //text area now matches original again
+            else if ($('#message').val() === oldmessage) {
+                messageChanged = false;
+                //remove padding and save button from sidebar
+                $("#savepadding").remove();
+                $("#savepage").remove();
+            }
+        });
+    </script>
 }
-    </tbody>
-</table>
